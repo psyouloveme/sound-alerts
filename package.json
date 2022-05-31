@@ -1,0 +1,223 @@
+{
+  "name": "soundalerts",
+  "version": "0.0.0",
+  "description": "Soundalerts",
+  "private": true,
+  "homepage": "",
+  "author": {
+    "name": "psyouloveme",
+    "email": "4607641+psyouloveme@users.noreply.github.com",
+    "url": ""
+  },
+  "files": [
+    "dashboard",
+    "graphics"
+  ],
+  "keywords": [
+    "",
+    "nodecg-bundle"
+  ],
+  "nodecg": {
+    "compatibleRange": "^1.1.1",
+    "dashboardPanels": [
+      {
+        "name": "audio-toggle",
+        "title": "Audio Alert Status",
+        "width": 3,
+        "file": "index.html",
+        "headerColor": "#525F78"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "index.html",
+        "width": 1280,
+        "height": 720
+      }
+    ],
+    "soundCues": [
+      {
+        "name": "!good",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/Aah_Good.ogg",
+        "file": "sound/Aah_Good.ogg"
+      },
+      {
+        "name": "!key",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/A_Key_But_To_What.ogg",
+        "file": "sound/A_Key_But_To_What.ogg"
+      },
+      {
+        "name": "!bye",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/Bye_bye.ogg",
+        "file": "sound/Bye_bye.ogg"
+      },
+      {
+        "name": "!fuku",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/Fuku_Hong_Kong.ogg",
+        "file": "sound/Fuku_Hong_Kong.ogg"
+      },
+      {
+        "name": "!ine",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/Ine_Hong_Kong.ogg",
+        "file": "sound/Ine_Hong_Kong.ogg"
+      },
+      {
+        "name": "!wind",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/Just_The_Wind.ogg",
+        "file": "sound/Just_The_Wind.ogg"
+      },
+      {
+        "name": "!winner",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/I_Won.ogg",
+        "file": "sound/I_Won.ogg"
+      },
+      {
+        "name": "!ticket1",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/Ticket_1.ogg",
+        "file": "sound/Ticket_1.ogg"
+      },
+      {
+        "name": "!ticket2",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/Ticket_2.ogg",
+        "file": "sound/Ticket_2.ogg"
+      },
+      {
+        "name": "!ticket3",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/Ticket_3.ogg",
+        "file": "sound/Ticket_3.ogg"
+      },
+      {
+        "name": "!hello",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/Uh_Hello.ogg",
+        "file": "sound/Uh_Hello.ogg"
+      },
+      {
+        "name": "!money",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/I_Demand_Compensation.ogg",
+        "file": "sound/I_Demand_Compensation.ogg"
+      },
+      {
+        "name": "!blackmail",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/Blackmail.ogg",
+        "file": "sound/Blackmail.ogg"
+      },
+      {
+        "name": "!challenger",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/AnyoneWantToChallengeThisMan_0100C007.ogg",
+        "file": "sound/AnyoneWantToChallengeThisMan_0100C007.ogg"
+      },
+      {
+        "name": "!bigorsmall",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/AOneOnOneGame_0103B001.ogg",
+        "file": "sound/AOneOnOneGame_0103B001.ogg"
+      },
+      {
+        "name": "!father",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/ForMyFather_A0125_File3.ogg",
+        "file": "sound/ForMyFather_A0125_File3.ogg"
+      },
+      {
+        "name": "!heyboy",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/HeyBoyHowAboutAGame_0103B002.ogg",
+        "file": "sound/HeyBoyHowAboutAGame_0103B002.ogg"
+      },
+      {
+        "name": "!hydrate",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/IThinkIllGetADrink_0109A004.ogg",
+        "file": "sound/IThinkIllGetADrink_0109A004.ogg"
+      },
+      {
+        "name": "!wow",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/NaImNotThatGood_E1025_File20.ogg",
+        "file": "sound/NaImNotThatGood_E1025_File20.ogg"
+      },
+      {
+        "name": "!wrong",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/WrongOne_E1001D_File25.ogg",
+        "file": "sound/WrongOne_E1001D_File25.ogg"
+      }
+    ]
+  },
+  "repository": "https://github.com/nodecg/nodecg.git",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "parcel": "^2.6.0"
+  },
+  "targets": {
+    "soundalerts": {
+      "source": "./src/graphics/index.html",
+      "distDir": "./graphics/",
+      "context": "browser",
+      "publicUrl": "./"
+    },
+    "dashboard": {
+      "source": "./src/dashboard/index.html",
+      "distDir": "./dashboard/",
+      "context": "browser",
+      "publicUrl": "./"
+    }
+  },
+  "scripts": {
+    "build": "parcel build --target soundalerts --target dashboard"
+  }
+}
