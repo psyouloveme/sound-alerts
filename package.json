@@ -11,7 +11,9 @@
   },
   "files": [
     "dashboard",
-    "graphics"
+    "graphics",
+    "extension.js",
+    "extension"
   ],
   "keywords": [
     "",
@@ -19,6 +21,9 @@
   ],
   "nodecg": {
     "compatibleRange": "^1.1.1",
+    "bundleDependencies": {
+      "twitch-listener": "^0.0.0"
+    },
     "dashboardPanels": [
       {
         "name": "audio-toggle",
@@ -99,6 +104,14 @@
         "assignable": false,
         "defaultFile": "sound/Ticket_1.ogg",
         "file": "sound/Ticket_1.ogg"
+      },
+      {
+        "name": "!nocontest",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/nocontest.ogg",
+        "file": "sound/nocontest.ogg"
       },
       {
         "name": "!ticket2",
@@ -403,6 +416,52 @@
         "assignable": false,
         "defaultFile": "sound/S1-E1025-51_ImNumber1.ogg",
         "file": "sound/S1-E1025-51_ImNumber1.ogg"
+      },
+      {
+        "name": "!dead",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/beehive_faint.ogg",
+        "file": "sound/beehive_faint.ogg"
+      },
+      {
+        "name": "!honk",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/bike_horn.ogg",
+        "file": "sound/bike_horn.ogg"
+      },
+      {
+        "name": "!fat",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/fat.ogg",
+        "file": "sound/fat.ogg"
+      },
+      {
+        "name": "!ganbare",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "defaultFile": "sound/gambare.ogg",
+        "file": "sound/gambare.ogg"
+      },
+      {
+        "name": "!guts",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "file": "sound/guts.ogg"
+      },
+      {
+        "name": "!yatta",
+        "channels": 1,
+        "defaultVolume": 60,
+        "assignable": false,
+        "file": "sound/yatta.ogg"
       }
     ]
   },
@@ -423,9 +482,15 @@
       "distDir": "./dashboard/",
       "context": "browser",
       "publicUrl": "./"
+    },
+    "extension": {
+      "source": "./src/extension/index.js",
+      "distDir": "./extension/",
+      "context": "node",
+      "publicUrl": "./"
     }
   },
   "scripts": {
-    "build": "parcel build --target soundalerts --target dashboard"
+    "build": "parcel build --target soundalerts --target dashboard --target extension"
   }
 }

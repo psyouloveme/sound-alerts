@@ -24,9 +24,7 @@
       <label for="audio-enabled-yes">Yes</label>
     </div>
     <script>
-      const audioAlertsEnabled = nodecg.Replicant("audio_alerts_enabled", {
-        defaultValue: false,
-      });
+      const audioAlertsEnabled = nodecg.Replicant("audio_alerts_enabled");
       NodeCG.waitForReplicants(audioAlertsEnabled).then(() => {
         // bind a replicant change handler
         audioAlertsEnabled.on("change", (nextVal) => {
