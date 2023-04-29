@@ -1,6 +1,6 @@
 {
   "name": "sound-alerts",
-  "version": "0.0.0",
+  "version": "0.1.2",
   "description": "Soundalerts",
   "private": true,
   "homepage": "",
@@ -210,14 +210,6 @@
         "file": "sound/S1-03-01GORAC007_Geek.ogg"
       },
       {
-        "name": "!best",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1025A052_TheBest.ogg",
-        "file": "sound/S1-03-E1025A052_TheBest.ogg"
-      },
-      {
         "name": "!woman",
         "channels": 1,
         "defaultVolume": 60,
@@ -288,14 +280,6 @@
         "assignable": false,
         "defaultFile": "sound/S1-03-E1078B001_GoodMorningEveryone.ogg",
         "file": "sound/S1-03-E1078B001_GoodMorningEveryone.ogg"
-      },
-      {
-        "name": "!unbelievable",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1021B031_UnbelievableMan.ogg",
-        "file": "sound/S1-03-E1021B031_UnbelievableMan.ogg"
       },
       {
         "name": "!hang",
@@ -378,14 +362,6 @@
         "file": "sound/S1-E1025-25_GameOver.ogg"
       },
       {
-        "name": "!whoa",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-E1025-49_Woah.ogg",
-        "file": "sound/S1-E1025-49_Woah.ogg"
-      },
-      {
         "name": "!hyg",
         "channels": 1,
         "defaultVolume": 60,
@@ -400,22 +376,6 @@
         "assignable": false,
         "defaultFile": "sound/S1-E1025-54_ManYourPrettyGood.ogg",
         "file": "sound/S1-E1025-54_ManYourPrettyGood.ogg"
-      },
-      {
-        "name": "!wtg",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-E1025-53_WayToGoMan.ogg",
-        "file": "sound/S1-E1025-53_WayToGoMan.ogg"
-      },
-      {
-        "name": "!number1",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-E1025-51_ImNumber1.ogg",
-        "file": "sound/S1-E1025-51_ImNumber1.ogg"
       },
       {
         "name": "!dead",
@@ -454,6 +414,7 @@
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
+        "defaultFile": "sound/guts.ogg",
         "file": "sound/guts.ogg"
       },
       {
@@ -461,14 +422,17 @@
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
+        "defaultFile": "sound/yatta.ogg",
         "file": "sound/yatta.ogg"
       }
     ]
   },
-  "repository": "https://github.com/nodecg/nodecg.git",
+  "repository": "https://github.com/psyouloveme/sound-alerts.git",
   "license": "Apache-2.0",
   "devDependencies": {
-    "parcel": "^2.6.0"
+    "nodecg-types": "^1.9.0",
+    "parcel": "^2.8.3",
+    "typescript": "^5.0.4"
   },
   "targets": {
     "soundalerts": {
@@ -484,7 +448,7 @@
       "publicUrl": "./"
     },
     "extension": {
-      "source": "./src/extension/index.js",
+      "source": "./src/extension/index.ts",
       "distDir": "./extension/",
       "context": "node",
       "publicUrl": "./"
