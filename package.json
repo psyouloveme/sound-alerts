@@ -12,11 +12,9 @@
   "files": [
     "dashboard",
     "graphics",
-    "extension.js",
     "extension"
   ],
   "keywords": [
-    "",
     "nodecg-bundle"
   ],
   "nodecg": {
@@ -469,6 +467,9 @@
   },
   "scripts": {
     "build": "parcel build --target soundalerts --target dashboard-settings --target dashboard-playcount --target extension",
-    "clean": "rm -rf ./.parcel-cache ./dist ./dashboard ./extension ./graphics"
+    "build-settings": "parcel build --target dashboard-settings",
+    "build-playcount": "parcel build --target dashboard-playcount",
+    "clean": "rm -rf ./.parcel-cache ./dist ./dashboard ./extension ./graphics",
+    "clean-playcount": "rm -rf .parcel-cache ./dist ./dashboard/play-counter/*"
   }
 }
