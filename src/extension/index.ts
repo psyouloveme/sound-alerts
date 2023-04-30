@@ -10,12 +10,14 @@ module.exports = function (nodecg : NodeCG) {
 	});
 
 	nodecg.listenFor('played-cue', (cueName: string, ack) => {
+		nodecg.log.info("played cue: %s", cueName);
 		if (cueName) {
 			if (cueName in audioAlertLog.value) {
 				audioAlertLog.value[cueName] += 1;
 			} else {
 				audioAlertLog.value[cueName] = 1;
 			}
+			nodecg.log.info("cue %s is now at %s plays", cueName, audioAlertLog.value[cueName]);
 		}
 
 		if (ack && !ack.handled) {

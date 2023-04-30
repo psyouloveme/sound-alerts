@@ -1,7 +1,8 @@
 
-const audioAlertsEnabled = nodecg.Replicant("audio_alerts_enabled");
-    NodeCG.waitForReplicants(audioAlertsEnabled).then(() => {
-    // bind a replicant change handler
+const audioAlertsEnabled = nodecg.Replicant<boolean>("audio_alerts_enabled");
+
+NodeCG.waitForReplicants(audioAlertsEnabled).then(() => {
+    // change handler for audio alert enabled status
     audioAlertsEnabled.on("change", (nextVal) => {
         let target;
         if (nextVal === true) {
