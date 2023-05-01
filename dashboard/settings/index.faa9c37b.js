@@ -1,2 +1,0 @@
-const e=nodecg.Replicant("audio_alerts_enabled");NodeCG.waitForReplicants(e).then((()=>{e.on("change",(e=>{let a;a=!0===e?"audio-enabled-yes":"audio-enabled-no";const n=document.getElementById(a);n&&(n.checked=!0)}));document.querySelectorAll("input[type=radio][name='audio-enabled']").forEach((a=>a.addEventListener("change",(a=>{const n=a.target;n&&n.value&&("Yes"===n.value?e.value=!0:e.value=!1)}))))}));
-//# sourceMappingURL=index.faa9c37b.js.map
