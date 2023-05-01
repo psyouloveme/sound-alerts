@@ -26,16 +26,18 @@
       {
         "name": "settings",
         "title": "Sound Alert Settings",
-        "width": 3,
+        "width": 4,
         "file": "settings/index.html",
-        "headerColor": "#525F78"
+        "headerColor": "#525F78",
+        "workspace": "Sound Alerts"
       },
       {
         "name": "play-counter",
         "title": "Sound Play Counter",
         "width": 3,
         "file": "play-counter/index.html",
-        "headerColor": "#525F78"
+        "headerColor": "#525F78",
+        "workspace": "Sound Alerts"
       }
     ],
     "graphics": [
@@ -466,10 +468,12 @@
     }
   },
   "scripts": {
-    "build": "parcel build --target soundalerts --target dashboard-settings --target dashboard-playcount --target extension",
+    "build": "parcel build --target 'soundalerts' --target 'dashboard-settings' --target 'dashboard-playcount' --target 'extension'",
+    "build-extension": "parcel build --target extension",
     "build-settings": "parcel build --target dashboard-settings",
     "build-playcount": "parcel build --target dashboard-playcount",
     "clean": "rm -rf ./.parcel-cache ./dist ./dashboard ./extension ./graphics",
-    "clean-playcount": "rm -rf .parcel-cache ./dist ./dashboard/play-counter/*"
+    "clean-playcount": "rm -rf .parcel-cache ./dist ./dashboard/play-counter/*",
+    "start-temp": "parcel serve src/temp/index.html"
   }
 }

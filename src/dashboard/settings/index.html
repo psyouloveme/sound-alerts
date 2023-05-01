@@ -1,66 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Sound Alert Settings</title>
-    <script type="module" src="index.ts"></script>
-  </head>
-
-  <body>
-    <div class="panel" id="panel">
-      <span>Audio Alerts Enabled</span>
-      <input
-        type="radio"
-        name="audio-enabled"
-        id="audio-enabled-no"
-        value="No"
-      />
-      <label for="audio-enabled-no">No</label>
-      <input
-        type="radio"
-        name="audio-enabled"
-        id="audio-enabled-yes"
-        value="Yes"
-      />
-      <label for="audio-enabled-yes">Yes</label>
-    </div>
-    <div class="panel" id="cueMapPanel">
-      <form id="soundCueCommandForm" name="soundCueCommandForm">
-        <div class="formGroup">
-          <label for="commandName">
-            Command Name
-          </label>
-          <input type="text" name="commandName"></input>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Sound Alert Settings</title>
+        <style type="text/css">
+            #cueConfigPanel {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                width: 95%;
+            }
+            .commandFormRow {
+                display: flex;
+                justify-content: space-between;
+                border: 2px solid black;
+                padding: 0.5rem;
+            }
+            .btnRemove {
+                color: white;
+                background-color: red;
+            }
+            .btnAdd {
+                color: white;
+                background-color: green;
+            }
+            .formGroup {
+                display: flex;
+                flex-direction: column;
+            }
+            .formGroup > label {
+                font-weight: 600;
+            }
+            .middle {
+                justify-content: center;
+            }
+            .btnToggleEnabled {
+                color: white;
+                background-color: red;
+            }
+            .btnToggleEnabled.enabled {
+                background-color: green;
+            }
+            .hidden {
+                display: none;
+            }
+            .container {
+                width: 100%;
+                max-height: 400px;
+                overflow-y: scroll;
+                display: flex;
+                justify-content: center;
+            }
+        </style>
+        <script type="module" src="index.ts"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div id="cueConfigPanel"></div>
         </div>
-        <div class="formGroup">
-          <label for="coolDownMs">
-            Cooldown
-          </label>
-          <input type="text" name="coolDownMs"></input>
-        </div>
-        <div class="formGroup">
-          <label for="mapType">
-            Type
-          </label>
-          <select name="mapType">
-            <option value="-1">Select one</option>
-            <option value="single">Single</option>
-            <option value="ordered">Ordered</option>
-            <option value="Random">Random</option>
-          </select>
-        </div>
-        <div class="formGroup">
-          <label for="mapType">
-            Type
-          </label>
-          <select>
-            <option value="-1">Select one</option>
-            <option value="single">Single</option>
-            <option value="ordered">Ordered</option>
-            <option value="Random">Random</option>
-          </select>
-        </div>
-      </form>
-    </div>
-  </body>
+    </body>
 </html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Sound Alert Settings</title>
+        <style type="text/css">
+            #cueConfigPanel {
+                display: flex;
+                flex-direction: column;
+            }
+            .commandFormRow {
+                display: flex;
+                justify-content: space-between;
+            }
+            .btnRemove {
+                color: white;
+                background-color: red;
+            }
+            .btnAdd {
+                color: white;
+                background-color: green;
+            }
+            .formGroup {
+                display: flex;
+                flex-direction: column;
+            }
+            .middle {
+                justify-content: center;
+            }
+            .btnToggleEnabled {
+                color: white;
+                background-color: red;
+            }
+            .btnToggleEnabled.enabled {
+                background-color: green;
+            }
+            .hidden {
+                display: none;
+            }
+            body {
+                width: 33%;
+            }
+        </style>
+    </head>
+    <body>
+        <form id="soundCueCommandForm" name="soundCueCommandForm">
+            <div id="cueConfigPanel">
+                <div class="commandFormRow">
+                    <div class="formGroup middle">
+                        <button class="btnToggleEnabled">Off</button>
+                    </div>
+                    <div class="formGroup">
+                        <label for="commandName">Command Name</label>
+                        <input type="text" name="commandName"></input>
+                    </div>
+                    <div class="formGroup">
+                        <label for="coolDownMs">Cooldown</label>
+                        <input type="number" name="coolDownMs" min="0"></input>
+                    </div>
+                    <div class="formGroup">
+                        <label for="mapType">Type</label>
+                        <select name="mapType">
+                            <option value="-1" selected>Select one</option>
+                            <option value="single">Single</option>
+                            <option value="ordered">Ordered</option>
+                            <option value="Random">Random</option>
+                        </select>
+                    </div>
+                    <div class="formGroup">
+                        <label for="mappedCues">Mapped Cues</label>
+                        <div class="cueSelectWrapper">
+                            <select name="mappedCues">
+                                <option value="-1" selected>Select one</option>
+                                <option value="ticket1">ticket1</option>
+                                <option value="ticket2">ticket2</option>
+                                <option value="ticket3">ticket3</option>
+                            </select>
+                            <button class="btnRemove">-</button>
+                        </div>
+                        <div class="cueSelectWrapper">
+                            <select name="mappedCues">
+                                <option value="-1" selected>Select one</option>
+                                <option value="ticket1">ticket1</option>
+                                <option value="ticket2">ticket2</option>
+                                <option value="ticket3">ticket3</option>
+                            </select>
+                            <button class="btnRemove">-</button>
+                        </div>
+                        <div className="addRemoveCue">
+                            <button class="btnAdd">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="commandFormRow">
+                    <div class="formGroup middle">
+                        <button class="btnToggleEnabled">Off</button>
+                    </div>
+                    <div class="formGroup">
+                        <label for="commandName">Command Name</label>
+                        <input type="text" name="commandName"></input>
+                    </div>
+                    <div class="formGroup">
+                        <label for="coolDownMs">Cooldown</label>
+                        <input type="number" name="coolDownMs"></input>
+                    </div>
+                    <div class="formGroup">
+                        <label for="mapType">Type</label>
+                        <select name="mapType">
+                            <option value="-1" selected>Select one</option>
+                            <option value="single">Single</option>
+                            <option value="ordered">Ordered</option>
+                            <option value="Random">Random</option>
+                        </select>
+                    </div>
+                    <div class="formGroup">
+                        <label for="mappedCues">Mapped Cues</label>
+                        <div class="cueSelectWrapper">
+                            <select name="mappedCues">
+                                <option value="-1" selected>Select one</option>
+                                <option value="ticket1">ticket1</option>
+                                <option value="ticket2">ticket2</option>
+                                <option value="ticket3">ticket3</option>
+                            </select>
+                            <button class="btnRemove">-</button>
+                        </div>
+                        <div className="addRemoveCue">
+                            <button class="btnAdd">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

@@ -1,8 +1,4 @@
 import HtmlHelpers, { SelectInputDataElem } from "./HtmlHelpers";
-import { SoundAlertReplicants, SoundCueNameList } from "../../types/SoundAlertReplicants.d";
-import SoundCommandType from "../../types/SoundCommandType.d";
-import ReplicantEvents from "../../types/ReplicantEvents.d";
-import { ElementIDs, CSSClasses, ConfigFormState } from "./types.d";
 
 const CommandConfig = nodecg.Replicant<SoundCommandList>(SoundAlertReplicants.soundCueConfig);
 const CommandTypes = nodecg.Replicant<SoundCommandType[]>(SoundAlertReplicants.soundCueTypes);
@@ -55,9 +51,6 @@ function onEnableButtonClicked(e: MouseEvent) {
 function buildEnableButton(enabled: boolean, commandName: string) {
     let txt = enabled ? 'On' : "Off";
     const btn = HtmlHelpers.buildButton("btnEnabled", txt, [CSSClasses.btnToggleEnabled]);
-    if (enabled) {
-        btn.classList.add(CSSClasses.enabled);
-    }
     btn.onclick = onEnableButtonClicked;
     btn.dataset.cmdName = commandName;
     btn.dataset.enabled = enabled.toString();
@@ -101,11 +94,7 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
     }
 
     const rowClasses = [ CSSClasses.commandFormRow, ];
-
-    const rowDiv = HtmlHelpers.buildForm(`commandForm[]`, null, []);
     const newFormRow = HtmlHelpers.buildDiv(`cmd-row-${cmd.commandName}`, rowClasses);
-    newFormRow.dataset.commandName = cmd.commandName;
-    
 
     // enable/disable button
     let fg = buildFormGroup([CSSClasses.middle]);
@@ -117,7 +106,7 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
     const hiddenClasses = [CSSClasses.hidden];
 
     fg = buildFormGroup();
-    let label = HtmlHelpers.buildLabel("commandName", "Name");
+    let label = HtmlHelpers.buildLabel("commandName", "Command Name");
     let input = HtmlHelpers.buildTextInput("commandName", cmd.commandName, hiddenClasses);
     let span = HtmlHelpers.buildSpan(cmd.commandName);
     fg.append(label, input, span);
@@ -126,9 +115,8 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
     fg = buildFormGroup();
     label = HtmlHelpers.buildLabel("coolDownMs", "Cooldown");
     let cooldownValue = cmd.coolDownMs ? cmd.coolDownMs.toString() : "0";
-    let cooldownText = cmd.coolDownMs ? `${cmd.coolDownMs} ms` : "None";
     input = HtmlHelpers.buildNumberInput("coolDownMs", cooldownValue, hiddenClasses)
-    span = HtmlHelpers.buildSpan(cooldownText);
+    span = HtmlHelpers.buildSpan(cooldownValue);
     fg.append(label, input, span);
     newFormRow.appendChild(fg)
 
@@ -147,7 +135,6 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
 
     fg = buildFormGroup();
     label = HtmlHelpers.buildLabel("mappedCues", "Cues");
-    fg.append(label);
 
     const hasMappedCue = (cmd.mappedCues.length > 0);
     const mappedCues: SelectInputDataElem[] = [];
@@ -156,14 +143,14 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
         value: "-1",
         selected: (!hasMappedCue)
     })
-    // for (let g = 0; g < SoundCues.value.length; g++) {
-    //     const v = SoundCues.value[g];
-    //     mappedCues.push({
-    //         label: v,
-    //         value: v,
-    //         selected: false
-    //     });
-    // }
+    for (let g = 0; g < SoundCues.value.length; g++) {
+        const v = SoundCues.value[g];
+        mappedCues.push({
+            label: v,
+            value: v,
+            selected: false
+        });
+    }
 
     if (cmd.mappedCues.length === 0) {
         span = HtmlHelpers.buildSpan("None");
@@ -187,31 +174,18 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
                 }
             })
             select = HtmlHelpers.buildSelect(hiddenClasses, `mappedCues[]`, cueListCopy); 
-            fg.appendChild(select);
             if (i > 0) {
-                btn = HtmlHelpers.buildButton("", "-", [CSSClasses.btnRemove, CSSClasses.hidden]);
+                const btn = HtmlHelpers.buildButton("", "-", [CSSClasses.btnRemove, CSSClasses.hidden]);
                 innerDiv.appendChild(btn);
             }
             fg.appendChild(innerDiv);
         }
     }
     fg.appendChild(span);
-    btn = HtmlHelpers.buildButton("","+",[CSSClasses.btnAdd, CSSClasses.hidden]);
-    fg.appendChild(btn);
+    const addButton = HtmlHelpers.buildButton("","+",[CSSClasses.btnAdd, CSSClasses.hidden]);
+    fg.appendChild(addButton);
     newFormRow.appendChild(fg);
-
-    fg = buildFormGroup([CSSClasses.middle, CSSClasses.hidden])
-    btn = HtmlHelpers.buildButton("","Save", [CSSClasses.btnAdd]);
-    fg.appendChild(btn);
-    newFormRow.appendChild(fg);
-
-    fg = buildFormGroup([CSSClasses.middle]);
-    btn = HtmlHelpers.buildButton("","Edit", []);
-    fg.appendChild(btn);
-    newFormRow.appendChild(fg);
-
-    rowDiv.appendChild(newFormRow);
-    return rowDiv;
+    return newFormRow;
 }
 
 function initializeSoundCueForms(config : SoundCommandList) {
@@ -260,7 +234,7 @@ function onSoundCommandConfigChange(newConfig: SoundCommandList, oldConfig: Soun
 
 
 function setupSoundCueConfigForm(){
-    NodeCG.waitForReplicants(CommandConfig, CommandTypes, SoundCues)
+    NodeCG.waitForReplicants(CommandConfig, CommandTypes)
     .then(() => {
         CommandConfig.on(ReplicantEvents.change, onSoundCommandConfigChange);
     });
