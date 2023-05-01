@@ -1,6 +1,6 @@
 {
   "name": "sound-alerts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Soundalerts",
   "private": true,
   "homepage": "",
@@ -22,15 +22,24 @@
   "nodecg": {
     "compatibleRange": "^1.1.1",
     "bundleDependencies": {
-      "twitch-listener": "^0.0.0"
+      "twitch-listener": "^0.0.1"
     },
     "dashboardPanels": [
       {
-        "name": "audio-toggle",
-        "title": "Audio Alert Status",
+        "name": "settings",
+        "title": "Sound Alert Settings",
+        "width": 4,
+        "file": "settings/index.html",
+        "headerColor": "#525F78",
+        "workspace": "Sound Alerts"
+      },
+      {
+        "name": "play-counter",
+        "title": "Sound Play Counter",
         "width": 3,
-        "file": "index.html",
-        "headerColor": "#525F78"
+        "file": "play-counter/index.html",
+        "headerColor": "#525F78",
+        "workspace": "Sound Alerts"
       }
     ],
     "graphics": [
@@ -468,7 +477,7 @@
   "repository": "https://github.com/nodecg/nodecg.git",
   "license": "Apache-2.0",
   "devDependencies": {
-    "parcel": "^2.6.0"
+    "parcel": "^2.8.3"
   },
   "targets": {
     "soundalerts": {
@@ -477,9 +486,15 @@
       "context": "browser",
       "publicUrl": "./"
     },
-    "dashboard": {
-      "source": "./src/dashboard/index.html",
-      "distDir": "./dashboard/",
+    "dashboard-settings": {
+      "source": "./src/dashboard/settings/index.html",
+      "distDir": "./dashboard/settings/",
+      "context": "browser",
+      "publicUrl": "./"
+    },
+    "dashboard-playcount": {
+      "source": "./src/dashboard/play-counter/index.html",
+      "distDir": "./dashboard/play-counter/",
       "context": "browser",
       "publicUrl": "./"
     },
@@ -491,6 +506,7 @@
     }
   },
   "scripts": {
-    "build": "parcel build --target soundalerts --target dashboard --target extension"
+    "build": "parcel build --target 'soundalerts' --target 'dashboard-settings' --target 'dashboard-playcount' --target 'extension'",
+    "clean": "rm -rf ./dashboard ./extension ./graphics ./.parcel-cache"
   }
 }
