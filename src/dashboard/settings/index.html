@@ -1,5 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sound Alerts</title>
+  </head>
+
+  <body>
+    <div class="panel" id="panel">
+      <span>Audio Alerts Enabled</span>
+      <input
+        type="radio"
+        name="audio-enabled"
+        id="audio-enabled-no"
+        value="No"
+      />
+      <label for="audio-enabled-no">No</label>
+      <input
+        type="radio"
+        name="audio-enabled"
+        id="audio-enabled-yes"
+        value="Yes"
+      />
+      <label for="audio-enabled-yes">Yes</label>
+    </div>
+    <script>
+      const audioAlertsEnabled = nodecg.Replicant("audio_alerts_enabled");
+      NodeCG.waitForReplicants(audioAlertsEnabled).then(() => {
+        // bind a replicant change handler
+        audioAlertsEnabled.on("change", (nextVal) => {
+          if (nextVal === true) {
+            document.getElementById("audio-enabled-yes").checked = true;
+          } else {
+            document.getElementById("audio-enabled-no").checked = true;
+          }
+        });
+
+        // bind a change handler for the dropdown
+        const radios = document.querySelectorAll(
+          "input[type=radio][name='audio-enabled']"
+        );
+        radios.forEach((radio) =>
+          radio.addEventListener("change", (event) => {
+            if (event.target.value === "Yes") {
+              audioAlertsEnabled.value = true;
+            } else {
+              audioAlertsEnabled.value = false;
+            }
+          })
+        );
+      });
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <title>Sound Alert Settings</title>
