@@ -18,7 +18,7 @@
       });
 
       const onChatReceived = ({ user = "", message = "" }) => {
-        if (!user || !message || !message.startsWith("!")) {
+        if (!user || !message) {
           return;
         }
 
