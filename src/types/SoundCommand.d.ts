@@ -6,6 +6,11 @@ interface SoundCommand {
      * Name of the chat sound command 
      * @example "!ticket" 
      */
+    id: number;
+    /** 
+     * Name of the chat sound command 
+     * @example "!ticket" 
+     */
     commandName: string;
     /**
      * The command type for the sound cues associated with this command.

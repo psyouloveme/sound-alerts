@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "Soundalerts",
   "private": true,
-  "homepage": "",
+  "homepage": "https://github.com/psyouloveme/sound-alerts",
   "author": {
     "name": "psyouloveme",
     "email": "4607641+psyouloveme@users.noreply.github.com",
@@ -49,7 +49,7 @@
     ],
     "soundCues": [
       {
-        "name": "!good",
+        "name": "good",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -57,7 +57,7 @@
         "file": "sound/Aah_Good.ogg"
       },
       {
-        "name": "!key",
+        "name": "key",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -65,7 +65,7 @@
         "file": "sound/A_Key_But_To_What.ogg"
       },
       {
-        "name": "!bye",
+        "name": "bye",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -73,7 +73,7 @@
         "file": "sound/Bye_bye.ogg"
       },
       {
-        "name": "!fuku",
+        "name": "fuku",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -81,7 +81,7 @@
         "file": "sound/Fuku_Hong_Kong.ogg"
       },
       {
-        "name": "!ine",
+        "name": "ine",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -89,7 +89,7 @@
         "file": "sound/Ine_Hong_Kong.ogg"
       },
       {
-        "name": "!wind",
+        "name": "wind",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -97,7 +97,7 @@
         "file": "sound/Just_The_Wind.ogg"
       },
       {
-        "name": "!winner",
+        "name": "winner",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -105,7 +105,7 @@
         "file": "sound/I_Won.ogg"
       },
       {
-        "name": "!ticket1",
+        "name": "ticket1",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -113,7 +113,7 @@
         "file": "sound/Ticket_1.ogg"
       },
       {
-        "name": "!nocontest",
+        "name": "nocontest",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -121,7 +121,7 @@
         "file": "sound/nocontest.ogg"
       },
       {
-        "name": "!ticket2",
+        "name": "ticket2",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -129,7 +129,7 @@
         "file": "sound/Ticket_2.ogg"
       },
       {
-        "name": "!ticket3",
+        "name": "ticket3",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -137,7 +137,7 @@
         "file": "sound/Ticket_3.ogg"
       },
       {
-        "name": "!hello",
+        "name": "hello",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -145,7 +145,7 @@
         "file": "sound/Uh_Hello.ogg"
       },
       {
-        "name": "!money",
+        "name": "money",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -153,7 +153,7 @@
         "file": "sound/I_Demand_Compensation.ogg"
       },
       {
-        "name": "!blackmail",
+        "name": "blackmail",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -161,7 +161,7 @@
         "file": "sound/Blackmail.ogg"
       },
       {
-        "name": "!challenger",
+        "name": "challenger",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -169,7 +169,7 @@
         "file": "sound/AnyoneWantToChallengeThisMan_0100C007.ogg"
       },
       {
-        "name": "!bigorsmall",
+        "name": "bigorsmall",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -177,7 +177,7 @@
         "file": "sound/AOneOnOneGame_0103B001.ogg"
       },
       {
-        "name": "!father",
+        "name": "father",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -185,7 +185,7 @@
         "file": "sound/ForMyFather_A0125_File3.ogg"
       },
       {
-        "name": "!heyboy",
+        "name": "heyboy",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -193,7 +193,7 @@
         "file": "sound/HeyBoyHowAboutAGame_0103B002.ogg"
       },
       {
-        "name": "!hydrate",
+        "name": "hydrate",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -201,7 +201,7 @@
         "file": "sound/IThinkIllGetADrink_0109A004.ogg"
       },
       {
-        "name": "!wrong",
+        "name": "wrong",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -209,7 +209,7 @@
         "file": "sound/WrongOne_E1001D_File25.ogg"
       },
       {
-        "name": "!geek",
+        "name": "geek",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -217,7 +217,7 @@
         "file": "sound/S1-03-01GORAC007_Geek.ogg"
       },
       {
-        "name": "!woman",
+        "name": "woman",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -225,7 +225,7 @@
         "file": "sound/S1-02-A0165B004_JimmyDontKnowNoWoman.ogg"
       },
       {
-        "name": "!ryo",
+        "name": "ryo",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -233,7 +233,7 @@
         "file": "sound/S1-02-A0159A016_RyoHongKong.ogg"
       },
       {
-        "name": "!gettem",
+        "name": "gettem",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -241,7 +241,7 @@
         "file": "sound/S1-03-E1069B003_ImGonnaGettem.ogg"
       },
       {
-        "name": "!rookie",
+        "name": "rookie",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -249,7 +249,7 @@
         "file": "sound/S1-03-E1078B009_PrettyDamnGoodForARookie.ogg"
       },
       {
-        "name": "!finish",
+        "name": "finish",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -257,7 +257,7 @@
         "file": "sound/S1-03-E1078B008_Finish.ogg"
       },
       {
-        "name": "!go",
+        "name": "go",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -265,7 +265,7 @@
         "file": "sound/S1-03-E1078B007_Go.ogg"
       },
       {
-        "name": "!race",
+        "name": "race",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -273,7 +273,7 @@
         "file": "sound/S1-03-E1078B003_RaceInstructions.ogg"
       },
       {
-        "name": "!mark",
+        "name": "mark",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -281,7 +281,7 @@
         "file": "sound/S1-03-E1078B005_OnYourMarksAlwaysTimeToGo.ogg"
       },
       {
-        "name": "!mornin",
+        "name": "mornin",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -289,7 +289,7 @@
         "file": "sound/S1-03-E1078B001_GoodMorningEveryone.ogg"
       },
       {
-        "name": "!hang",
+        "name": "hang",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -297,7 +297,7 @@
         "file": "sound/S1-03-E1021B011_HangBeatbox.ogg"
       },
       {
-        "name": "!toobad",
+        "name": "toobad",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -305,7 +305,7 @@
         "file": "sound/S1-03-E1021B006_OhManThatsTooBad.ogg"
       },
       {
-        "name": "!ding",
+        "name": "ding",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -313,7 +313,7 @@
         "file": "sound/S1-03-jinguru03_NotebookUpdated.ogg"
       },
       {
-        "name": "!get",
+        "name": "get",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -321,7 +321,7 @@
         "file": "sound/S1-03-BGM03-jinguru01_ItemGet.ogg"
       },
       {
-        "name": "!chen",
+        "name": "chen",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -329,7 +329,7 @@
         "file": "sound/S1-03-01MADB003_DontKnowAnyChen.ogg"
       },
       {
-        "name": "!lunch",
+        "name": "lunch",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -337,7 +337,7 @@
         "file": "sound/S1-03-01MADB001_HeyMyLunch.ogg"
       },
       {
-        "name": "!boats",
+        "name": "boats",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -345,7 +345,7 @@
         "file": "sound/S1-SA1086-03_IShouldAskAboutBoats.ogg"
       },
       {
-        "name": "!heykid",
+        "name": "heykid",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -353,7 +353,7 @@
         "file": "sound/S1-E1039-15_HeyKidHowAboutAGame.ogg"
       },
       {
-        "name": "!sweaty",
+        "name": "sweaty",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -361,7 +361,7 @@
         "file": "sound/S1-E1040-13_LetsGetSweaty.ogg"
       },
       {
-        "name": "!gameover",
+        "name": "gameover",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -369,7 +369,7 @@
         "file": "sound/S1-E1025-25_GameOver.ogg"
       },
       {
-        "name": "!hyg",
+        "name": "hyg",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -377,7 +377,7 @@
         "file": "sound/S1-E1025-58_HYG.ogg"
       },
       {
-        "name": "!prettygood",
+        "name": "prettygood",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -385,7 +385,7 @@
         "file": "sound/S1-E1025-54_ManYourPrettyGood.ogg"
       },
       {
-        "name": "!dead",
+        "name": "dead",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -393,7 +393,7 @@
         "file": "sound/beehive_faint.ogg"
       },
       {
-        "name": "!honk",
+        "name": "honk",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -401,7 +401,7 @@
         "file": "sound/bike_horn.ogg"
       },
       {
-        "name": "!fat",
+        "name": "fat",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -409,7 +409,7 @@
         "file": "sound/fat.ogg"
       },
       {
-        "name": "!ganbare",
+        "name": "ganbare",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -417,7 +417,7 @@
         "file": "sound/gambare.ogg"
       },
       {
-        "name": "!guts",
+        "name": "guts",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -425,7 +425,7 @@
         "file": "sound/guts.ogg"
       },
       {
-        "name": "!yatta",
+        "name": "yatta",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
@@ -468,11 +468,11 @@
     }
   },
   "scripts": {
-    "build": "parcel build --target 'soundalerts' --target 'dashboard-settings' --target 'dashboard-playcount' --target 'extension'",
+    "build": "bash ./scripts/build-all.sh",
     "build-extension": "parcel build --target extension",
     "build-settings": "parcel build --target dashboard-settings",
     "build-playcount": "parcel build --target dashboard-playcount",
-    "clean": "rm -rf ./.parcel-cache ./dist ./dashboard ./extension ./graphics",
+    "clean": "bash ./scripts/clean.sh",
     "clean-playcount": "rm -rf .parcel-cache ./dist ./dashboard/play-counter/*",
     "start-temp": "parcel serve src/temp/index.html"
   }

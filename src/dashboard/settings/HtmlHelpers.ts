@@ -17,7 +17,7 @@ function buildHiddenInput(name: string, value: string) {
     return input;
 }
 
-function buildButton(name : string, text: string, classes?: string[], ) {
+function buildButton(name : string, text: string, classes?: string[]) {
     const button = document.createElement("button") as HTMLButtonElement;
     if (classes && classes.length > 0){
         button.classList.add(...classes);
@@ -103,7 +103,6 @@ function buildForm(name: string | null, id: string | null, classes: CSSClasses[]
     }
     return form;
 }
-
 
 export default {
     buildButton,

@@ -14,15 +14,18 @@ enum BundleDeps {
 
 function getDefaultCueMap() {
 	if (!nodecgHandle.current) {
-		throw Error("Cue command change failed: NodeCG handle is invalid.");
+		throw Error("Cue command mapping failed: NodeCG handle is invalid.");
 	}
 	const nodecg = nodecgHandle.current;
 	const cuemap : SoundCommandList = [];
 	const soundCues = nodecg.readReplicant<CueAssets>(SoundAlertReplicants.nodeCGServerSoundCues);
+	const cueIndex = nodecg.Replicant<number>(SoundAlertReplicants.soundCueCommandIndex);
+
 	if (soundCues && soundCues.length > 0) {
 		for (let c = 0; c < soundCues.length; c++) {
 			let cue = soundCues[c];
 			cuemap.push({
+				id: ++cueIndex.value,
 				commandName: cue.name.startsWith("!") ? cue.name : `!${cue.name}`,
 				enabled: false,
 				coolDownMs: null,
@@ -38,22 +41,21 @@ function getDefaultCueMap() {
 	return cuemap;
 }
 
-function initCueTypes() {
-	return [ SoundCommandType.ordered, SoundCommandType.random, SoundCommandType.single ];
-}
-
 module.exports = function (nodecg : NodeCG) {
 	nodecg.log.debug('Soundalerts bundle started.');
 	nodecgHandle.current = nodecg;
 
 	// create replicants if they don't exist
+	nodecg.Replicant<number>(SoundAlertReplicants.soundCueCommandIndex, { defaultValue: 0 });
 	nodecg.Replicant<boolean>(SoundAlertReplicants.soundCuesEnabled, { defaultValue: false });
 	nodecg.Replicant<AudioAlertLog>(SoundAlertReplicants.soundCueLog, { defaultValue: {} });
-	
-	const soundCueTypes = nodecg.Replicant<string[]>(SoundAlertReplicants.soundCueTypes);
-	if (!soundCueTypes.value) {
-		soundCueTypes.value = initCueTypes();
-	}
+	nodecg.Replicant<string[]>(SoundAlertReplicants.soundCueTypes, {
+		defaultValue: [ 
+			SoundCommandType.ordered, 
+			SoundCommandType.random, 
+			SoundCommandType.single 
+		]
+	});
 
 	// set up sound cues if not intialized
 	const soundCueMap = nodecg.Replicant<SoundCommandList>(SoundAlertReplicants.soundCueConfig);
@@ -61,12 +63,11 @@ module.exports = function (nodecg : NodeCG) {
 		soundCueMap.value = getDefaultCueMap();
 	// }
 
+	const knownSoundCues = nodecg.Replicant<SoundCueNameList>(SoundAlertReplicants.soundCueList, { defaultValue: [] });	
 	// refresh list of known sound cues when the cue replicant changes
-	const knownSoundCues = nodecg.Replicant<SoundCueNameList>(SoundAlertReplicants.soundCueList, { defaultValue: [] });
-	
 	nodecg.Replicant<CueAssets>(SoundAlertReplicants.nodeCGServerSoundCues)
 		.on(ReplicantEvents.change, (newVal) => {
-			knownSoundCues.value = newVal.map((c) => c.name);;
+			knownSoundCues.value = newVal.map((c) => c.name);
 		});
 
 	// refresh status of mapped cues when known cue list changes

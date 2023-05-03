@@ -8,6 +8,84 @@ const CommandConfig = nodecg.Replicant<SoundCommandList>(SoundAlertReplicants.so
 const CommandTypes = nodecg.Replicant<SoundCommandType[]>(SoundAlertReplicants.soundCueTypes);
 const SoundCues = nodecg.Replicant<SoundCueNameList>(SoundAlertReplicants.soundCueList);
 
+function getCommandConfigById(id: number) {
+    if (!CommandConfig || !CommandConfig.value) {
+        throw Error("Unable to retrieve command config - config replicant not available.");
+    }
+    const foundCommand = CommandConfig.value.find((c) => c.id === id);
+    if (!foundCommand) {
+        throw Error(`Unable to find command with ID ${id}.`);
+    }
+    return { ...foundCommand };
+}
+
+function getLiveCommandConfigById(id: number) {
+    if (!CommandConfig || !CommandConfig.value) {
+        throw Error("Unable to retrieve command config - config replicant not available.");
+    }
+    const foundCommand = CommandConfig.value.find((c) => c.id === id);
+    if (!foundCommand) {
+        throw Error(`Unable to find command with ID ${id}.`);
+    }
+    return foundCommand;
+}
+
+function getTypeOptions(defaultValue?: string) {
+    if (!CommandTypes || !CommandTypes.value) {
+        throw Error("Unable to retrieve command types.");
+    }
+    const typeOptions = CommandTypes.value.reduce((prev, curr) => {
+        prev.push({
+            label: curr,
+            value: curr,
+            selected: defaultValue === curr,
+        })
+        return prev;
+    }, [{
+        label: "Select one",
+        value: "-1",
+        selected: defaultValue ? false : true
+    }] as SelectInputDataElem[])
+    return typeOptions;
+}
+
+function getCueOptions(defaultValue?: string, soundCues?: SoundCueNameList) {
+    let cues;
+    if (soundCues) {
+        cues = soundCues;
+    } else {
+        if (!SoundCues || !SoundCues.value) {
+            throw Error("Sound cue replicant not available.")
+        }
+        cues = SoundCues.value;
+    }
+
+    const cueOptions = cues.reduce((prev, curr) => {
+        prev.push({
+            label: curr,
+            value: curr,
+            selected: defaultValue === curr,
+        })
+        return prev;
+    }, [{
+        label: "Select one",
+        value: "-1",
+        selected: defaultValue ? false : true
+    }] as SelectInputDataElem[])
+
+    return cueOptions;
+}
+
+function getCueOptionsList(mappedCues: SoundCueNameList) {
+    if (!SoundCues || !SoundCues.value) {
+        throw Error("Sound cue replicant not available.")
+    }
+    const cues = SoundCues.value;
+    const cueOptionLists = mappedCues.map((c) => getCueOptions(c, cues)); 
+    
+    return cueOptionLists;
+}
+
 const CommandFormState : ConfigFormState = {
     editingRows: [],
     submittingRows: [],
@@ -37,11 +115,10 @@ function onEnableButtonClicked(e: MouseEvent) {
         return;
     }
 
-
     const cmdName = target.dataset.cmdName;
     const foundCommand = CommandConfig.value.find((c) => c.commandName === cmdName);
     if (!foundCommand) {
-        console.error(`Failed enabling/disabling sound alert - command found for "${cmdName}" not found.`)
+        console.error(`Failed enabling/disabling sound alert - command matching "${cmdName}" not found.`)
         return;
     }
     
@@ -50,6 +127,161 @@ function onEnableButtonClicked(e: MouseEvent) {
     
     // this will trigger a re-render
     foundCommand.enabled = !enabled;
+}
+
+
+function removeValueElem(fg: HTMLDivElement) {
+    const selector = ".fieldValue";
+    const fvs = fg.querySelectorAll(selector);
+    if (fvs && fvs.length > 0) {
+        for (let v = 0; v < fvs.length; v++) {
+            const fieldToRemove = fvs[v];
+            fg.removeChild(fieldToRemove);
+        }
+    }
+}
+
+
+
+
+
+function onEditCancelClick(event: MouseEvent) {
+    event.preventDefault();
+
+    if (!event.target) {
+        console.error("Failed sound alert edit - no event target found.");
+        return;
+    }
+    const target = event.target as HTMLButtonElement;
+    const form = target.closest("form") as HTMLFormElement;
+    if (!form) {
+        console.error("Failed sound alert edit - unable to locate form.");
+        return;
+    }
+
+    const id = form.dataset.id ? parseInt(form.dataset.id) : -1;
+    if (id < 0) {
+        console.error("Failed sound alert edit - no ID found.");
+        return;
+    }
+
+    const formGroups = form.querySelectorAll("div.formGroup");
+    if (formGroups.length <= 0) {
+        console.error("Failed sound alert edit - unable to locate form groups.");
+        return;
+    }
+
+    const foundCommand = getCommandConfigById(id);
+    const fieldValueClass = ['fieldValue'];
+
+    for (let x = 0; x < formGroups.length; x++) {
+        const fg = formGroups[x] as HTMLDivElement;
+        switch (fg.dataset.fieldName) {
+            case 'name':
+                const nameInput = HtmlHelpers.buildSpan(foundCommand.commandName, fieldValueClass);
+                removeValueElem(fg);
+                fg.appendChild(nameInput);
+                break;
+            case 'cooldown':
+                const cooldownVal = foundCommand.coolDownMs ? foundCommand.coolDownMs.toString() : "0";
+                const cooldownInput = HtmlHelpers.buildSpan(cooldownVal, fieldValueClass);
+                removeValueElem(fg);
+                fg.appendChild(cooldownInput);
+                break;
+            case 'type':
+                const typeInput = HtmlHelpers.buildSpan(foundCommand.commandType, fieldValueClass);
+                removeValueElem(fg);
+                fg.appendChild(typeInput);
+                break;
+            case 'cues':
+                const cueElem = HtmlHelpers.buildSpan(foundCommand.mappedCues.join((', ')), fieldValueClass);
+                removeValueElem(fg);
+                fg.append(cueElem);
+                break;
+            case 'edit':
+                const editButton = HtmlHelpers.buildButton("btnEdit","Edit", []);
+                editButton.onclick = onEditButtonClick;
+                fg.replaceChildren(editButton);
+                break;
+            default:
+                break;
+        }
+    }
+
+    form.dataset.editing = 'false';
+}
+
+
+function onEditButtonClick(event: MouseEvent) {
+    event.preventDefault();
+
+    if (!event.target) {
+        console.error("Failed sound alert edit - no event target found.");
+        return;
+    }
+
+    const target = event.target as HTMLButtonElement;
+    const form = target.closest("form") as HTMLFormElement;
+    if (!form) {
+        console.error("Failed sound alert edit - unable to locate form.");
+        return;
+    }
+    form.dataset.editing = 'true';
+
+    const id = form.dataset.id ? parseInt(form.dataset.id) : -1;
+    if (id < 0) {
+        console.error("Failed sound alert edit - no ID found.");
+        return;
+    }
+
+    const formGroups = form.querySelectorAll("div.formGroup");
+    if (formGroups.length <= 0) {
+        console.error("Failed sound alert edit - unable to locate form groups.");
+        return;
+    }
+
+    const foundCommand = getCommandConfigById(id);
+    const fieldValueClass = ['fieldValue'];
+
+    for (let x = 0; x < formGroups.length; x++) {
+        const fg = formGroups[x] as HTMLDivElement;
+        switch (fg.dataset.fieldName) {
+            case 'name':
+                const nameInput = HtmlHelpers.buildTextInput("commandName", foundCommand.commandName, fieldValueClass);
+                removeValueElem(fg);
+                fg.appendChild(nameInput);
+                break;
+            case 'cooldown':
+                const cooldownVal = foundCommand.coolDownMs ? foundCommand.coolDownMs.toString() : "0";
+                const cooldownInput = HtmlHelpers.buildNumberInput("cooldownMs", cooldownVal, fieldValueClass);
+                removeValueElem(fg);
+                fg.appendChild(cooldownInput);
+                break;
+            case 'type':
+                const typeOptions = getTypeOptions(foundCommand.commandType);
+                const typeInput = HtmlHelpers.buildSelect(fieldValueClass, "commandType", typeOptions);
+                removeValueElem(fg);
+                fg.appendChild(typeInput);
+                break;
+            case 'cues':
+                const cueLists = getCueOptionsList(foundCommand.mappedCues);
+                const cueElems = cueLists.map((c) => {
+                    return HtmlHelpers.buildSelect(fieldValueClass, "mappedCues", c);
+                });
+                removeValueElem(fg);
+                fg.append(...cueElems);
+                break;
+            case 'edit':
+                const saveButton = HtmlHelpers.buildButton("btnSave", "Save", [ CSSClasses.btnAdd, ]);
+                const cancelButton = HtmlHelpers.buildButton("btnCancel", "Cancel", []);
+                cancelButton.onclick = onEditCancelClick;
+                const deleteButton = HtmlHelpers.buildButton("btnDelete", "Delete", [ CSSClasses.btnRemove ]);
+                fg.replaceChildren(saveButton, cancelButton, deleteButton);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 function buildEnableButton(enabled: boolean, commandName: string) {
@@ -90,6 +322,15 @@ function btnRemoveClick(e: MouseEvent) {
     }
 }
 
+function buildReadonlyFormGroup(fieldName: string, labelName: string, label: string, text: string) {
+    const fg = buildFormGroup();
+    fg.dataset.fieldName = fieldName;
+    let labelElem = HtmlHelpers.buildLabel(labelName, label);
+    const spanElem = HtmlHelpers.buildSpan(text, ['fieldValue']);
+    fg.append(labelElem, spanElem);
+    return fg;
+}
+
 
 function mapCommandToForm(cmd: SoundCommand, index: number) { 
     if (!CommandTypes || !CommandTypes.value) {
@@ -100,12 +341,15 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
         throw Error("Unable to map command rows - no sound cues are loaded.");
     }
 
-    const rowClasses = [ CSSClasses.commandFormRow, ];
+    console.log(JSON.stringify(cmd));
 
-    const rowDiv = HtmlHelpers.buildForm(`commandForm[]`, null, []);
-    const newFormRow = HtmlHelpers.buildDiv(`cmd-row-${cmd.commandName}`, rowClasses);
-    newFormRow.dataset.commandName = cmd.commandName;
-    
+    const rowDiv = HtmlHelpers.buildForm(`commandForm-${cmd.id}`, null, []);
+    rowDiv.dataset.id = cmd.id.toString();
+    rowDiv.dataset.commandName = cmd.commandName;    
+    rowDiv.dataset.index = index.toString();
+    rowDiv.dataset.editing = 'false';
+
+    const newFormRow = HtmlHelpers.buildDiv(`cmd-row-${cmd.commandName}`, [ CSSClasses.commandFormRow, ]);
 
     // enable/disable button
     let fg = buildFormGroup([CSSClasses.middle]);
@@ -113,103 +357,38 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
     fg.appendChild(btn);
     newFormRow.appendChild(fg)
 
-
-    const hiddenClasses = [CSSClasses.hidden];
-
-    fg = buildFormGroup();
-    let label = HtmlHelpers.buildLabel("commandName", "Name");
-    let input = HtmlHelpers.buildTextInput("commandName", cmd.commandName, hiddenClasses);
-    let span = HtmlHelpers.buildSpan(cmd.commandName);
-    fg.append(label, input, span);
-    newFormRow.appendChild(fg)
-
-    fg = buildFormGroup();
-    label = HtmlHelpers.buildLabel("coolDownMs", "Cooldown");
-    let cooldownValue = cmd.coolDownMs ? cmd.coolDownMs.toString() : "0";
-    let cooldownText = cmd.coolDownMs ? `${cmd.coolDownMs} ms` : "None";
-    input = HtmlHelpers.buildNumberInput("coolDownMs", cooldownValue, hiddenClasses)
-    span = HtmlHelpers.buildSpan(cooldownText);
-    fg.append(label, input, span);
-    newFormRow.appendChild(fg)
-
-    
-    const commandTypeOptions = CommandTypes.value.map((val) => ({
-        label: val,
-        value: val,
-        selected: cmd.commandType === val,
-    })) as SelectInputDataElem[];
-    fg = buildFormGroup();
-    label = HtmlHelpers.buildLabel("commandType", "Type");
-    let select = HtmlHelpers.buildSelect(hiddenClasses, "commandType", commandTypeOptions)
-    span = HtmlHelpers.buildSpan(cmd.commandType);
-    fg.append(label, select, span);
-    newFormRow.appendChild(fg)
-
-    fg = buildFormGroup();
-    label = HtmlHelpers.buildLabel("mappedCues", "Cues");
-    fg.append(label);
-
-    const hasMappedCue = (cmd.mappedCues.length > 0);
-    const mappedCues: SelectInputDataElem[] = [];
-    mappedCues.push({
-        label: "Select one",
-        value: "-1",
-        selected: (!hasMappedCue)
-    })
-    // for (let g = 0; g < SoundCues.value.length; g++) {
-    //     const v = SoundCues.value[g];
-    //     mappedCues.push({
-    //         label: v,
-    //         value: v,
-    //         selected: false
-    //     });
-    // }
-
-    if (cmd.mappedCues.length === 0) {
-        span = HtmlHelpers.buildSpan("None");
-        const innerDiv = HtmlHelpers.buildDiv(undefined, [CSSClasses.cueSelectWrapper])
-        
-        const cueListCopy = mappedCues.map((a) => ({ ...a }));
-        select = HtmlHelpers.buildSelect(hiddenClasses, `mappedCues[]`, cueListCopy); 
-        innerDiv.appendChild(select);
-
-        fg.appendChild(innerDiv);
-    } else {
-        span = HtmlHelpers.buildSpan(cmd.mappedCues.join(", "));
-
-        for (let i = 0; i < cmd.mappedCues.length; i++) {
-            const innerDiv = HtmlHelpers.buildDiv(undefined, [CSSClasses.cueSelectWrapper])
-            const mc = cmd.mappedCues[i];
-            const cueListCopy = mappedCues.map((a) => {
-                return {
-                    ...a,
-                    selected : mc === a.value
-                }
-            })
-            select = HtmlHelpers.buildSelect(hiddenClasses, `mappedCues[]`, cueListCopy); 
-            fg.appendChild(select);
-            if (i > 0) {
-                btn = HtmlHelpers.buildButton("", "-", [CSSClasses.btnRemove, CSSClasses.hidden]);
-                innerDiv.appendChild(btn);
-            }
-            fg.appendChild(innerDiv);
-        }
-    }
-    fg.appendChild(span);
-    btn = HtmlHelpers.buildButton("","+",[CSSClasses.btnAdd, CSSClasses.hidden]);
-    fg.appendChild(btn);
-    newFormRow.appendChild(fg);
-
-    fg = buildFormGroup([CSSClasses.middle, CSSClasses.hidden])
-    btn = HtmlHelpers.buildButton("","Save", [CSSClasses.btnAdd]);
-    fg.appendChild(btn);
-    newFormRow.appendChild(fg);
-
     fg = buildFormGroup([CSSClasses.middle]);
+    let span = HtmlHelpers.buildSpan(cmd.id.toString());
+    fg.appendChild(span);
+    newFormRow.appendChild(fg);
+
+    // command name field
+    fg = buildReadonlyFormGroup("name", "commandName", "Name", cmd.commandName);
+    newFormRow.appendChild(fg);
+
+    // cooldown field
+    let txt = cmd.coolDownMs ? `${cmd.coolDownMs} ms` : "None";
+    fg = buildReadonlyFormGroup("cooldown", "coolDownMs", "Cooldown", txt);
+    newFormRow.appendChild(fg);
+
+    // command type field
+    fg = buildReadonlyFormGroup("type", "commandType", "Type", cmd.commandType);
+    newFormRow.appendChild(fg)
+
+    // mapped cues
+    const cueTxt = cmd.mappedCues.length <= 0 ? "None" : cmd.mappedCues.join(", ");
+    fg = buildReadonlyFormGroup("cues", "mappedCues", "Cues", cueTxt);
+    newFormRow.appendChild(fg)
+
+    // edit button
+    fg = buildFormGroup([CSSClasses.middle]);
+    fg.dataset.fieldName = "edit";
     btn = HtmlHelpers.buildButton("","Edit", []);
+    btn.onclick = onEditButtonClick;
     fg.appendChild(btn);
     newFormRow.appendChild(fg);
 
+    // add the row to the form
     rowDiv.appendChild(newFormRow);
     return rowDiv;
 }
@@ -224,11 +403,33 @@ function initializeSoundCueForms(config : SoundCommandList) {
     mapPanel.append(...rows);
 }
 
+function updateCommandForm() {
+
+}
+
+function insertCommandForm() {
+
+}
+
 function updateSoundCueForms(newConfig : SoundCommandList, oldConfig: SoundCommandList) {
     const mapPanel = document.getElementById(ElementIDs.cueConfigPanel);
     if (!mapPanel) {
         console.error("Unable to locate panel, skipping form update.")
         return;
+    }
+    const foundIds = [];
+    for (let i = 0; i < newConfig.length; i++) {
+        const cfg = newConfig[i];
+        foundIds.push(cfg.id);
+        let hasChanges = false;
+        const oldCfg = oldConfig.find((c) => c.id === cfg.id);
+        const form = document.querySelector(`form[data-id=${cfg.id}]`) as HTMLFormElement;
+        
+        if (oldCfg) {
+            
+        } else {
+
+        }
     }
 }
 
@@ -239,6 +440,8 @@ function teardownSoundCueForms() {
         return;
     }
 }
+
+
 
 function onSoundCommandConfigChange(newConfig: SoundCommandList, oldConfig: SoundCommandList) {
     if (!Array.isArray(newConfig))  {
