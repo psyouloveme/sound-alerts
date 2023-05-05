@@ -2,7 +2,7 @@ import HtmlHelpers, { SelectInputDataElem } from "./HtmlHelpers";
 import { SoundAlertReplicants, SoundCueNameList } from "../../types/SoundAlertReplicants.d";
 import SoundCommandType from "../../types/SoundCommandType.d";
 import ReplicantEvents from "../../types/ReplicantEvents.d";
-import { ElementIDs, CSSClasses, ConfigFormState } from "./types.d";
+import { ElementIDs, CSSClasses, } from "./types.d";
 
 const CommandConfig = nodecg.Replicant<SoundCommandList>(SoundAlertReplicants.soundCueConfig);
 const CommandTypes = nodecg.Replicant<SoundCommandType[]>(SoundAlertReplicants.soundCueTypes);
@@ -86,14 +86,6 @@ function getCueOptionsList(mappedCues: SoundCueNameList) {
     return cueOptionLists;
 }
 
-const CommandFormState : ConfigFormState = {
-    editingRows: [],
-    submittingRows: [],
-    rowErrors: {},
-    rendered: false,
-    commandTypeOptions: [],
-}
-
 /**
  * Mouse click event for the enable/disable button.
  * Apply changes to config instantly.
@@ -129,7 +121,6 @@ function onEnableButtonClicked(e: MouseEvent) {
     foundCommand.enabled = !enabled;
 }
 
-
 function removeValueElem(fg: HTMLDivElement) {
     const selector = ".fieldValue";
     const fvs = fg.querySelectorAll(selector);
@@ -140,10 +131,6 @@ function removeValueElem(fg: HTMLDivElement) {
         }
     }
 }
-
-
-
-
 
 function onEditCancelClick(event: MouseEvent) {
     event.preventDefault();
@@ -199,7 +186,7 @@ function onEditCancelClick(event: MouseEvent) {
                 fg.append(cueElem);
                 break;
             case 'edit':
-                const editButton = HtmlHelpers.buildButton("btnEdit","Edit", []);
+                const editButton = HtmlHelpers.buildButton("btnEdit", "Edit", []);
                 editButton.onclick = onEditButtonClick;
                 fg.replaceChildren(editButton);
                 break;
@@ -210,7 +197,6 @@ function onEditCancelClick(event: MouseEvent) {
 
     form.dataset.editing = 'false';
 }
-
 
 function onEditButtonClick(event: MouseEvent) {
     event.preventDefault();
@@ -331,7 +317,6 @@ function buildReadonlyFormGroup(fieldName: string, labelName: string, label: str
     return fg;
 }
 
-
 function mapCommandToForm(cmd: SoundCommand, index: number) { 
     if (!CommandTypes || !CommandTypes.value) {
         throw Error("Unable to map command rows - no command types are loaded.");
@@ -353,11 +338,13 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
 
     // enable/disable button
     let fg = buildFormGroup([CSSClasses.middle]);
+    fg.dataset.fieldName = 'enabled';
     let btn = buildEnableButton(cmd.enabled, cmd.commandName);
     fg.appendChild(btn);
     newFormRow.appendChild(fg)
 
     fg = buildFormGroup([CSSClasses.middle]);
+    fg.dataset.fieldName = 'id';
     let span = HtmlHelpers.buildSpan(cmd.id.toString());
     fg.appendChild(span);
     newFormRow.appendChild(fg);
@@ -403,12 +390,18 @@ function initializeSoundCueForms(config : SoundCommandList) {
     mapPanel.append(...rows);
 }
 
-function updateCommandForm() {
-
-}
-
-function insertCommandForm() {
-
+function updateValueElem(fg: HTMLDivElement, value: string) {
+    const selector = ".fieldValue";
+    const fv = fg.querySelector(selector) as HTMLInputElement | HTMLSpanElement | HTMLSelectElement;
+    if (fv) {
+        if (fv.tagName === "span") {
+            (fv as HTMLSpanElement).innerText = value;
+        } else if (fv.tagName === 'input') {
+            (fv as HTMLInputElement).value = value;
+        } else if (fv.tagName === 'select') {
+            (fv as HTMLSelectElement).value = value;
+        }
+    }
 }
 
 function updateSoundCueForms(newConfig : SoundCommandList, oldConfig: SoundCommandList) {
@@ -422,13 +415,84 @@ function updateSoundCueForms(newConfig : SoundCommandList, oldConfig: SoundComma
         const cfg = newConfig[i];
         foundIds.push(cfg.id);
         let hasChanges = false;
-        const oldCfg = oldConfig.find((c) => c.id === cfg.id);
-        const form = document.querySelector(`form[data-id=${cfg.id}]`) as HTMLFormElement;
+        const oldCfg = (i < oldConfig.length) ? oldConfig[i] : null;
+        const form = document.querySelector(`form[data-id='${cfg.id}']`) as HTMLFormElement;
         
         if (oldCfg) {
-            
-        } else {
+            if (oldCfg.allCuesAreValid !== cfg.allCuesAreValid) {
+                hasChanges = true;
 
+            }
+            if (oldCfg.lastUseTimestamp !== cfg.lastUseTimestamp) {
+                hasChanges = true;
+            }
+            if (oldCfg.commandName !== cfg.commandName) {
+                hasChanges = true;
+                const fg = form.querySelector("div.formGroup[data-field-name='name']") as HTMLDivElement;
+                if (fg) {
+                    updateValueElem(fg, cfg.commandName);
+                }
+            }
+            if (oldCfg.commandType !== cfg.commandType) {
+                hasChanges = true;
+                const fg = form.querySelector("div.formGroup[data-field-name='type']") as HTMLDivElement;
+                if (fg) {
+                    updateValueElem(fg, cfg.commandType);
+                }
+            }
+            if (oldCfg.commandUsageCount !== cfg.commandUsageCount) {
+                hasChanges = true;
+            }
+            if (oldCfg.coolDownMs !== cfg.coolDownMs) {
+                hasChanges = true;
+                const fg = form.querySelector("div.formGroup[data-field-name='cooldown']") as HTMLDivElement;
+                if (fg) {
+                    updateValueElem(fg, cfg.coolDownMs ? cfg.coolDownMs.toString() : "0");
+                }
+            }
+            if (oldCfg.enabled !== cfg.enabled) {
+                hasChanges = true;
+                const fg = form.querySelector("div.formGroup[data-field-name='enabled']") as HTMLDivElement;
+                if (fg) {
+                    const btn = fg.querySelector("button") as HTMLButtonElement;
+                    btn.dataset.enabled = cfg.enabled.toString();
+                    if (cfg.enabled) {
+                        btn.innerText = "On";
+                        btn.classList.add(CSSClasses.enabled);
+                    } else {
+                        btn.innerText = "Off";
+                        btn.classList.remove(CSSClasses.enabled);
+                    }
+                }
+            }
+            if (oldCfg.orderedMappingIndex !== cfg.orderedMappingIndex) {
+                hasChanges = true;
+            }
+            if (oldCfg.id !== cfg.id) {
+                hasChanges = true;
+            }
+            const oldCues = oldCfg.mappedCues;
+            const newCues = cfg.mappedCues;
+            if ((oldCues.length !== newCues.length) || !newCues.every((c, idx) => c === oldCues[idx])) {
+                hasChanges = true;
+                const fg = form.querySelector("div.formGroup[data-field-name='cues']") as HTMLDivElement;
+                if (form.dataset.editing) {
+                    // if we're editing, just delete all the old dropdowns
+                    const cueLists = getCueOptionsList(newCues);
+                    const cueElems = cueLists.map((c) => {
+                        return HtmlHelpers.buildSelect(['fieldValue'], "mappedCues", c);
+                    });
+                    removeValueElem(fg);
+                    fg.append(...cueElems);
+                } else {
+                    if (fg) {
+                        updateValueElem(fg, newCues.join(", "));
+                    }
+                }
+            }
+        } else {
+            const row = mapCommandToForm(cfg, i);
+            mapPanel.append(row);
         }
     }
 }
@@ -440,8 +504,6 @@ function teardownSoundCueForms() {
         return;
     }
 }
-
-
 
 function onSoundCommandConfigChange(newConfig: SoundCommandList, oldConfig: SoundCommandList) {
     if (!Array.isArray(newConfig))  {
@@ -460,7 +522,6 @@ function onSoundCommandConfigChange(newConfig: SoundCommandList, oldConfig: Soun
         teardownSoundCueForms();
     }
 };
-
 
 function setupSoundCueConfigForm(){
     NodeCG.waitForReplicants(CommandConfig, CommandTypes, SoundCues)

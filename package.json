@@ -1,5 +1,5 @@
 {
-  "name": "sound-alerts",
+  "name": "sound-alerts-dev",
   "version": "0.1.2",
   "description": "Soundalerts",
   "private": true,
@@ -29,7 +29,7 @@
         "width": 4,
         "file": "settings/index.html",
         "headerColor": "#525F78",
-        "workspace": "Sound Alerts"
+        "workspace": "Sound Alerts Dev"
       },
       {
         "name": "play-counter",
@@ -37,7 +37,7 @@
         "width": 3,
         "file": "play-counter/index.html",
         "headerColor": "#525F78",
-        "workspace": "Sound Alerts"
+        "workspace": "Sound Alerts Dev"
       }
     ],
     "graphics": [
@@ -49,76 +49,12 @@
     ],
     "soundCues": [
       {
-        "name": "good",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/Aah_Good.ogg",
-        "file": "sound/Aah_Good.ogg"
-      },
-      {
-        "name": "key",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/A_Key_But_To_What.ogg",
-        "file": "sound/A_Key_But_To_What.ogg"
-      },
-      {
-        "name": "bye",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/Bye_bye.ogg",
-        "file": "sound/Bye_bye.ogg"
-      },
-      {
-        "name": "fuku",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/Fuku_Hong_Kong.ogg",
-        "file": "sound/Fuku_Hong_Kong.ogg"
-      },
-      {
-        "name": "ine",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/Ine_Hong_Kong.ogg",
-        "file": "sound/Ine_Hong_Kong.ogg"
-      },
-      {
-        "name": "wind",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/Just_The_Wind.ogg",
-        "file": "sound/Just_The_Wind.ogg"
-      },
-      {
-        "name": "winner",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/I_Won.ogg",
-        "file": "sound/I_Won.ogg"
-      },
-      {
         "name": "ticket1",
         "channels": 1,
         "defaultVolume": 60,
         "assignable": false,
         "defaultFile": "sound/Ticket_1.ogg",
         "file": "sound/Ticket_1.ogg"
-      },
-      {
-        "name": "nocontest",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/nocontest.ogg",
-        "file": "sound/nocontest.ogg"
       },
       {
         "name": "ticket2",
@@ -135,302 +71,6 @@
         "assignable": false,
         "defaultFile": "sound/Ticket_3.ogg",
         "file": "sound/Ticket_3.ogg"
-      },
-      {
-        "name": "hello",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/Uh_Hello.ogg",
-        "file": "sound/Uh_Hello.ogg"
-      },
-      {
-        "name": "money",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/I_Demand_Compensation.ogg",
-        "file": "sound/I_Demand_Compensation.ogg"
-      },
-      {
-        "name": "blackmail",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/Blackmail.ogg",
-        "file": "sound/Blackmail.ogg"
-      },
-      {
-        "name": "challenger",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/AnyoneWantToChallengeThisMan_0100C007.ogg",
-        "file": "sound/AnyoneWantToChallengeThisMan_0100C007.ogg"
-      },
-      {
-        "name": "bigorsmall",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/AOneOnOneGame_0103B001.ogg",
-        "file": "sound/AOneOnOneGame_0103B001.ogg"
-      },
-      {
-        "name": "father",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/ForMyFather_A0125_File3.ogg",
-        "file": "sound/ForMyFather_A0125_File3.ogg"
-      },
-      {
-        "name": "heyboy",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/HeyBoyHowAboutAGame_0103B002.ogg",
-        "file": "sound/HeyBoyHowAboutAGame_0103B002.ogg"
-      },
-      {
-        "name": "hydrate",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/IThinkIllGetADrink_0109A004.ogg",
-        "file": "sound/IThinkIllGetADrink_0109A004.ogg"
-      },
-      {
-        "name": "wrong",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/WrongOne_E1001D_File25.ogg",
-        "file": "sound/WrongOne_E1001D_File25.ogg"
-      },
-      {
-        "name": "geek",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-01GORAC007_Geek.ogg",
-        "file": "sound/S1-03-01GORAC007_Geek.ogg"
-      },
-      {
-        "name": "woman",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-02-A0165B004_JimmyDontKnowNoWoman.ogg",
-        "file": "sound/S1-02-A0165B004_JimmyDontKnowNoWoman.ogg"
-      },
-      {
-        "name": "ryo",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-02-A0159A016_RyoHongKong.ogg",
-        "file": "sound/S1-02-A0159A016_RyoHongKong.ogg"
-      },
-      {
-        "name": "gettem",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1069B003_ImGonnaGettem.ogg",
-        "file": "sound/S1-03-E1069B003_ImGonnaGettem.ogg"
-      },
-      {
-        "name": "rookie",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1078B009_PrettyDamnGoodForARookie.ogg",
-        "file": "sound/S1-03-E1078B009_PrettyDamnGoodForARookie.ogg"
-      },
-      {
-        "name": "finish",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1078B008_Finish.ogg",
-        "file": "sound/S1-03-E1078B008_Finish.ogg"
-      },
-      {
-        "name": "go",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1078B007_Go.ogg",
-        "file": "sound/S1-03-E1078B007_Go.ogg"
-      },
-      {
-        "name": "race",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1078B003_RaceInstructions.ogg",
-        "file": "sound/S1-03-E1078B003_RaceInstructions.ogg"
-      },
-      {
-        "name": "mark",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1078B005_OnYourMarksAlwaysTimeToGo.ogg",
-        "file": "sound/S1-03-E1078B005_OnYourMarksAlwaysTimeToGo.ogg"
-      },
-      {
-        "name": "mornin",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1078B001_GoodMorningEveryone.ogg",
-        "file": "sound/S1-03-E1078B001_GoodMorningEveryone.ogg"
-      },
-      {
-        "name": "hang",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1021B011_HangBeatbox.ogg",
-        "file": "sound/S1-03-E1021B011_HangBeatbox.ogg"
-      },
-      {
-        "name": "toobad",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-E1021B006_OhManThatsTooBad.ogg",
-        "file": "sound/S1-03-E1021B006_OhManThatsTooBad.ogg"
-      },
-      {
-        "name": "ding",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-jinguru03_NotebookUpdated.ogg",
-        "file": "sound/S1-03-jinguru03_NotebookUpdated.ogg"
-      },
-      {
-        "name": "get",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-BGM03-jinguru01_ItemGet.ogg",
-        "file": "sound/S1-03-BGM03-jinguru01_ItemGet.ogg"
-      },
-      {
-        "name": "chen",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-01MADB003_DontKnowAnyChen.ogg",
-        "file": "sound/S1-03-01MADB003_DontKnowAnyChen.ogg"
-      },
-      {
-        "name": "lunch",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-03-01MADB001_HeyMyLunch.ogg",
-        "file": "sound/S1-03-01MADB001_HeyMyLunch.ogg"
-      },
-      {
-        "name": "boats",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-SA1086-03_IShouldAskAboutBoats.ogg",
-        "file": "sound/S1-SA1086-03_IShouldAskAboutBoats.ogg"
-      },
-      {
-        "name": "heykid",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-E1039-15_HeyKidHowAboutAGame.ogg",
-        "file": "sound/S1-E1039-15_HeyKidHowAboutAGame.ogg"
-      },
-      {
-        "name": "sweaty",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-E1040-13_LetsGetSweaty.ogg",
-        "file": "sound/S1-E1040-13_LetsGetSweaty.ogg"
-      },
-      {
-        "name": "gameover",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-E1025-25_GameOver.ogg",
-        "file": "sound/S1-E1025-25_GameOver.ogg"
-      },
-      {
-        "name": "hyg",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-E1025-58_HYG.ogg",
-        "file": "sound/S1-E1025-58_HYG.ogg"
-      },
-      {
-        "name": "prettygood",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/S1-E1025-54_ManYourPrettyGood.ogg",
-        "file": "sound/S1-E1025-54_ManYourPrettyGood.ogg"
-      },
-      {
-        "name": "dead",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/beehive_faint.ogg",
-        "file": "sound/beehive_faint.ogg"
-      },
-      {
-        "name": "honk",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/bike_horn.ogg",
-        "file": "sound/bike_horn.ogg"
-      },
-      {
-        "name": "fat",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/fat.ogg",
-        "file": "sound/fat.ogg"
-      },
-      {
-        "name": "ganbare",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/gambare.ogg",
-        "file": "sound/gambare.ogg"
-      },
-      {
-        "name": "guts",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/guts.ogg",
-        "file": "sound/guts.ogg"
-      },
-      {
-        "name": "yatta",
-        "channels": 1,
-        "defaultVolume": 60,
-        "assignable": false,
-        "defaultFile": "sound/yatta.ogg",
-        "file": "sound/yatta.ogg"
       }
     ]
   },
