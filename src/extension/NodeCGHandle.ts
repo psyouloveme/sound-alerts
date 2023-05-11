@@ -1,11 +1,11 @@
-import { NodeCG } from "nodecg-types/types/server";
+import { type NodeCG } from 'nodecg-types/types/server'
 
-type Handle<T> = {
-	current: T | null;
-};
+interface Handle<T> {
+  current: T | null
+}
 
-const nodecgHandle : Handle<NodeCG> = {
-	current: null
-};
+const nodecgHandle: Handle<NodeCG> = {
+  current: null
+}
 
-export default nodecgHandle;
+export default nodecgHandle

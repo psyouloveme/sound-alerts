@@ -1,5 +1,5 @@
 enum ReplicantEvents {
-    change = "change"
+  change = 'change'
 }
 
 export default ReplicantEvents

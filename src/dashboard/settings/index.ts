@@ -1,8 +1,8 @@
-import HtmlHelpers, { SelectInputDataElem } from "./HtmlHelpers";
-import { SoundAlertReplicants, SoundCueNameList } from "../../types/SoundAlertReplicants.d";
-import SoundCommandType from "../../types/SoundCommandType.d";
-import ReplicantEvents from "../../types/ReplicantEvents.d";
-import { ElementIDs, CSSClasses, } from "./types.d";
+import HtmlHelpers, { type SelectInputDataElem } from './HtmlHelpers';
+import { SoundAlertReplicants, SoundCueNameList } from '../../types/SoundAlertReplicants.d';
+import SoundCommandType from '../../types/SoundCommandType.d';
+import ReplicantEvents from '../../types/ReplicantEvents.d';
+import { ElementIDs, CSSClasses, } from './types.d';
 
 const CommandConfig = nodecg.Replicant<SoundCommandList>(SoundAlertReplicants.soundCueConfig);
 const CommandTypes = nodecg.Replicant<SoundCommandType[]>(SoundAlertReplicants.soundCueTypes);
@@ -10,7 +10,7 @@ const SoundCues = nodecg.Replicant<SoundCueNameList>(SoundAlertReplicants.soundC
 
 function getCommandConfigById(id: number) {
     if (!CommandConfig || !CommandConfig.value) {
-        throw Error("Unable to retrieve command config - config replicant not available.");
+        throw Error('Unable to retrieve command config - config replicant not available.');
     }
     const foundCommand = CommandConfig.value.find((c) => c.id === id);
     if (!foundCommand) {
@@ -21,7 +21,7 @@ function getCommandConfigById(id: number) {
 
 function getLiveCommandConfigById(id: number) {
     if (!CommandConfig || !CommandConfig.value) {
-        throw Error("Unable to retrieve command config - config replicant not available.");
+        throw Error('Unable to retrieve command config - config replicant not available.');
     }
     const foundCommand = CommandConfig.value.find((c) => c.id === id);
     if (!foundCommand) {
@@ -32,7 +32,7 @@ function getLiveCommandConfigById(id: number) {
 
 function getTypeOptions(defaultValue?: string) {
     if (!CommandTypes || !CommandTypes.value) {
-        throw Error("Unable to retrieve command types.");
+        throw Error('Unable to retrieve command types.');
     }
     const typeOptions = CommandTypes.value.reduce((prev, curr) => {
         prev.push({
@@ -42,8 +42,8 @@ function getTypeOptions(defaultValue?: string) {
         })
         return prev;
     }, [{
-        label: "Select one",
-        value: "-1",
+        label: 'Select one',
+        value: '-1',
         selected: defaultValue ? false : true
     }] as SelectInputDataElem[])
     return typeOptions;
@@ -55,7 +55,7 @@ function getCueOptions(defaultValue?: string, soundCues?: SoundCueNameList) {
         cues = soundCues;
     } else {
         if (!SoundCues || !SoundCues.value) {
-            throw Error("Sound cue replicant not available.")
+            throw Error('Sound cue replicant not available.')
         }
         cues = SoundCues.value;
     }
@@ -68,8 +68,8 @@ function getCueOptions(defaultValue?: string, soundCues?: SoundCueNameList) {
         })
         return prev;
     }, [{
-        label: "Select one",
-        value: "-1",
+        label: 'Select one',
+        value: '-1',
         selected: defaultValue ? false : true
     }] as SelectInputDataElem[])
 
@@ -78,7 +78,7 @@ function getCueOptions(defaultValue?: string, soundCues?: SoundCueNameList) {
 
 function getCueOptionsList(mappedCues: SoundCueNameList) {
     if (!SoundCues || !SoundCues.value) {
-        throw Error("Sound cue replicant not available.")
+        throw Error('Sound cue replicant not available.')
     }
     const cues = SoundCues.value;
     const cueOptionLists = mappedCues.map((c) => getCueOptions(c, cues)); 
@@ -94,35 +94,35 @@ function getCueOptionsList(mappedCues: SoundCueNameList) {
 function onEnableButtonClicked(e: MouseEvent) {
     e.preventDefault();
     if (!CommandConfig || !CommandConfig.value) {
-        console.error("Failed enabling/disabling sound alert - replicant not available.");
+        console.error('Failed enabling/disabling sound alert - replicant not available.');
         return;
     }
     if (!e.target) {
-        console.error("Failed enabling/disabling sound alert - no event target found.")
+        console.error('Failed enabling/disabling sound alert - no event target found.')
         return;
     }
     const target = e.target as HTMLButtonElement;
     if (!target.dataset.cmdName) {
-        console.error("Failed enabling/disabling sound alert - command name found.")
+        console.error('Failed enabling/disabling sound alert - command name found.')
         return;
     }
 
     const cmdName = target.dataset.cmdName;
     const foundCommand = CommandConfig.value.find((c) => c.commandName === cmdName);
     if (!foundCommand) {
-        console.error(`Failed enabling/disabling sound alert - command matching "${cmdName}" not found.`)
+        console.error(`Failed enabling/disabling sound alert - command matching '${cmdName}' not found.`)
         return;
     }
     
     // check the target's dataset prop.
-    const enabled = (target.dataset.enabled === "true");    
+    const enabled = (target.dataset.enabled === 'true');    
     
     // this will trigger a re-render
     foundCommand.enabled = !enabled;
 }
 
 function removeValueElem(fg: HTMLDivElement) {
-    const selector = ".fieldValue";
+    const selector = '.fieldValue';
     const fvs = fg.querySelectorAll(selector);
     if (fvs && fvs.length > 0) {
         for (let v = 0; v < fvs.length; v++) {
@@ -136,25 +136,25 @@ function onEditCancelClick(event: MouseEvent) {
     event.preventDefault();
 
     if (!event.target) {
-        console.error("Failed sound alert edit - no event target found.");
+        console.error('Failed sound alert edit - no event target found.');
         return;
     }
     const target = event.target as HTMLButtonElement;
-    const form = target.closest("form") as HTMLFormElement;
+    const form = target.closest('form') as HTMLFormElement;
     if (!form) {
-        console.error("Failed sound alert edit - unable to locate form.");
+        console.error('Failed sound alert edit - unable to locate form.');
         return;
     }
 
     const id = form.dataset.id ? parseInt(form.dataset.id) : -1;
     if (id < 0) {
-        console.error("Failed sound alert edit - no ID found.");
+        console.error('Failed sound alert edit - no ID found.');
         return;
     }
 
-    const formGroups = form.querySelectorAll("div.formGroup");
+    const formGroups = form.querySelectorAll('div.formGroup');
     if (formGroups.length <= 0) {
-        console.error("Failed sound alert edit - unable to locate form groups.");
+        console.error('Failed sound alert edit - unable to locate form groups.');
         return;
     }
 
@@ -170,7 +170,7 @@ function onEditCancelClick(event: MouseEvent) {
                 fg.appendChild(nameInput);
                 break;
             case 'cooldown':
-                const cooldownVal = foundCommand.coolDownMs ? foundCommand.coolDownMs.toString() : "0";
+                const cooldownVal = foundCommand.coolDownMs ? foundCommand.coolDownMs.toString() : '0';
                 const cooldownInput = HtmlHelpers.buildSpan(cooldownVal, fieldValueClass);
                 removeValueElem(fg);
                 fg.appendChild(cooldownInput);
@@ -186,7 +186,7 @@ function onEditCancelClick(event: MouseEvent) {
                 fg.append(cueElem);
                 break;
             case 'edit':
-                const editButton = HtmlHelpers.buildButton("btnEdit", "Edit", []);
+                const editButton = HtmlHelpers.buildButton('btnEdit', 'Edit', []);
                 editButton.onclick = onEditButtonClick;
                 fg.replaceChildren(editButton);
                 break;
@@ -202,27 +202,27 @@ function onEditButtonClick(event: MouseEvent) {
     event.preventDefault();
 
     if (!event.target) {
-        console.error("Failed sound alert edit - no event target found.");
+        console.error('Failed sound alert edit - no event target found.');
         return;
     }
 
     const target = event.target as HTMLButtonElement;
-    const form = target.closest("form") as HTMLFormElement;
+    const form = target.closest('form') as HTMLFormElement;
     if (!form) {
-        console.error("Failed sound alert edit - unable to locate form.");
+        console.error('Failed sound alert edit - unable to locate form.');
         return;
     }
     form.dataset.editing = 'true';
 
     const id = form.dataset.id ? parseInt(form.dataset.id) : -1;
     if (id < 0) {
-        console.error("Failed sound alert edit - no ID found.");
+        console.error('Failed sound alert edit - no ID found.');
         return;
     }
 
-    const formGroups = form.querySelectorAll("div.formGroup");
+    const formGroups = form.querySelectorAll('div.formGroup');
     if (formGroups.length <= 0) {
-        console.error("Failed sound alert edit - unable to locate form groups.");
+        console.error('Failed sound alert edit - unable to locate form groups.');
         return;
     }
 
@@ -233,35 +233,35 @@ function onEditButtonClick(event: MouseEvent) {
         const fg = formGroups[x] as HTMLDivElement;
         switch (fg.dataset.fieldName) {
             case 'name':
-                const nameInput = HtmlHelpers.buildTextInput("commandName", foundCommand.commandName, fieldValueClass);
+                const nameInput = HtmlHelpers.buildTextInput('commandName', foundCommand.commandName, fieldValueClass);
                 removeValueElem(fg);
                 fg.appendChild(nameInput);
                 break;
             case 'cooldown':
-                const cooldownVal = foundCommand.coolDownMs ? foundCommand.coolDownMs.toString() : "0";
-                const cooldownInput = HtmlHelpers.buildNumberInput("cooldownMs", cooldownVal, fieldValueClass);
+                const cooldownVal = foundCommand.coolDownMs ? foundCommand.coolDownMs.toString() : '0';
+                const cooldownInput = HtmlHelpers.buildNumberInput('cooldownMs', cooldownVal, fieldValueClass);
                 removeValueElem(fg);
                 fg.appendChild(cooldownInput);
                 break;
             case 'type':
                 const typeOptions = getTypeOptions(foundCommand.commandType);
-                const typeInput = HtmlHelpers.buildSelect(fieldValueClass, "commandType", typeOptions);
+                const typeInput = HtmlHelpers.buildSelect(fieldValueClass, 'commandType', typeOptions);
                 removeValueElem(fg);
                 fg.appendChild(typeInput);
                 break;
             case 'cues':
                 const cueLists = getCueOptionsList(foundCommand.mappedCues);
                 const cueElems = cueLists.map((c) => {
-                    return HtmlHelpers.buildSelect(fieldValueClass, "mappedCues", c);
+                    return HtmlHelpers.buildSelect(fieldValueClass, 'mappedCues', c);
                 });
                 removeValueElem(fg);
                 fg.append(...cueElems);
                 break;
             case 'edit':
-                const saveButton = HtmlHelpers.buildButton("btnSave", "Save", [ CSSClasses.btnAdd, ]);
-                const cancelButton = HtmlHelpers.buildButton("btnCancel", "Cancel", []);
+                const saveButton = HtmlHelpers.buildButton('btnSave', 'Save', [ CSSClasses.btnAdd, ]);
+                const cancelButton = HtmlHelpers.buildButton('btnCancel', 'Cancel', []);
                 cancelButton.onclick = onEditCancelClick;
-                const deleteButton = HtmlHelpers.buildButton("btnDelete", "Delete", [ CSSClasses.btnRemove ]);
+                const deleteButton = HtmlHelpers.buildButton('btnDelete', 'Delete', [ CSSClasses.btnRemove ]);
                 fg.replaceChildren(saveButton, cancelButton, deleteButton);
                 break;
             default:
@@ -271,8 +271,8 @@ function onEditButtonClick(event: MouseEvent) {
 }
 
 function buildEnableButton(enabled: boolean, commandName: string) {
-    let txt = enabled ? 'On' : "Off";
-    const btn = HtmlHelpers.buildButton("btnEnabled", txt, [CSSClasses.btnToggleEnabled]);
+    let txt = enabled ? 'On' : 'Off';
+    const btn = HtmlHelpers.buildButton('btnEnabled', txt, [CSSClasses.btnToggleEnabled]);
     if (enabled) {
         btn.classList.add(CSSClasses.enabled);
     }
@@ -294,16 +294,16 @@ function buildFormGroup(extraClasses?: CSSClasses[]) {
 function btnRemoveClick(e: MouseEvent) {
     e.preventDefault();
     if (!CommandConfig || !CommandConfig.value) {
-        console.error("Failed removing command - replicant not available.");
+        console.error('Failed removing command - replicant not available.');
         return;
     }
     if (!e.target) {
-        console.error("Failed removing command - no event target found.")
+        console.error('Failed removing command - no event target found.')
         return;
     }
     const target = e.target as HTMLButtonElement;
     if (!target.dataset.cmdName) {
-        console.error("Failed removing command - command name found.")
+        console.error('Failed removing command - command name found.')
         return;
     }
 }
@@ -319,11 +319,11 @@ function buildReadonlyFormGroup(fieldName: string, labelName: string, label: str
 
 function mapCommandToForm(cmd: SoundCommand, index: number) { 
     if (!CommandTypes || !CommandTypes.value) {
-        throw Error("Unable to map command rows - no command types are loaded.");
+        throw Error('Unable to map command rows - no command types are loaded.');
     }
 
     if (!SoundCues || !SoundCues.value) {
-        throw Error("Unable to map command rows - no sound cues are loaded.");
+        throw Error('Unable to map command rows - no sound cues are loaded.');
     }
 
     console.log(JSON.stringify(cmd));
@@ -350,27 +350,27 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
     newFormRow.appendChild(fg);
 
     // command name field
-    fg = buildReadonlyFormGroup("name", "commandName", "Name", cmd.commandName);
+    fg = buildReadonlyFormGroup('name', 'commandName', 'Name', cmd.commandName);
     newFormRow.appendChild(fg);
 
     // cooldown field
-    let txt = cmd.coolDownMs ? `${cmd.coolDownMs} ms` : "None";
-    fg = buildReadonlyFormGroup("cooldown", "coolDownMs", "Cooldown", txt);
+    let txt = cmd.coolDownMs ? `${cmd.coolDownMs} ms` : 'None';
+    fg = buildReadonlyFormGroup('cooldown', 'coolDownMs', 'Cooldown', txt);
     newFormRow.appendChild(fg);
 
     // command type field
-    fg = buildReadonlyFormGroup("type", "commandType", "Type", cmd.commandType);
+    fg = buildReadonlyFormGroup('type', 'commandType', 'Type', cmd.commandType);
     newFormRow.appendChild(fg)
 
     // mapped cues
-    const cueTxt = cmd.mappedCues.length <= 0 ? "None" : cmd.mappedCues.join(", ");
-    fg = buildReadonlyFormGroup("cues", "mappedCues", "Cues", cueTxt);
+    const cueTxt = cmd.mappedCues.length <= 0 ? 'None' : cmd.mappedCues.join(', ');
+    fg = buildReadonlyFormGroup('cues', 'mappedCues', 'Cues', cueTxt);
     newFormRow.appendChild(fg)
 
     // edit button
     fg = buildFormGroup([CSSClasses.middle]);
-    fg.dataset.fieldName = "edit";
-    btn = HtmlHelpers.buildButton("","Edit", []);
+    fg.dataset.fieldName = 'edit';
+    btn = HtmlHelpers.buildButton('','Edit', []);
     btn.onclick = onEditButtonClick;
     fg.appendChild(btn);
     newFormRow.appendChild(fg);
@@ -383,7 +383,7 @@ function mapCommandToForm(cmd: SoundCommand, index: number) {
 function initializeSoundCueForms(config : SoundCommandList) {
     const mapPanel = document.getElementById(ElementIDs.cueConfigPanel);
     if (!mapPanel) {
-        console.error("Unable to locate panel, skipping form initialization.")
+        console.error('Unable to locate panel, skipping form initialization.')
         return;
     }
     const rows = config.map(mapCommandToForm);
@@ -391,10 +391,10 @@ function initializeSoundCueForms(config : SoundCommandList) {
 }
 
 function updateValueElem(fg: HTMLDivElement, value: string) {
-    const selector = ".fieldValue";
+    const selector = '.fieldValue';
     const fv = fg.querySelector(selector) as HTMLInputElement | HTMLSpanElement | HTMLSelectElement;
     if (fv) {
-        if (fv.tagName === "span") {
+        if (fv.tagName === 'span') {
             (fv as HTMLSpanElement).innerText = value;
         } else if (fv.tagName === 'input') {
             (fv as HTMLInputElement).value = value;
@@ -407,7 +407,7 @@ function updateValueElem(fg: HTMLDivElement, value: string) {
 function updateSoundCueForms(newConfig : SoundCommandList, oldConfig: SoundCommandList) {
     const mapPanel = document.getElementById(ElementIDs.cueConfigPanel);
     if (!mapPanel) {
-        console.error("Unable to locate panel, skipping form update.")
+        console.error('Unable to locate panel, skipping form update.')
         return;
     }
     const foundIds = [];
@@ -428,14 +428,14 @@ function updateSoundCueForms(newConfig : SoundCommandList, oldConfig: SoundComma
             }
             if (oldCfg.commandName !== cfg.commandName) {
                 hasChanges = true;
-                const fg = form.querySelector("div.formGroup[data-field-name='name']") as HTMLDivElement;
+                const fg = form.querySelector('div.formGroup[data-field-name='name']') as HTMLDivElement;
                 if (fg) {
                     updateValueElem(fg, cfg.commandName);
                 }
             }
             if (oldCfg.commandType !== cfg.commandType) {
                 hasChanges = true;
-                const fg = form.querySelector("div.formGroup[data-field-name='type']") as HTMLDivElement;
+                const fg = form.querySelector('div.formGroup[data-field-name='type']') as HTMLDivElement;
                 if (fg) {
                     updateValueElem(fg, cfg.commandType);
                 }
@@ -445,22 +445,22 @@ function updateSoundCueForms(newConfig : SoundCommandList, oldConfig: SoundComma
             }
             if (oldCfg.coolDownMs !== cfg.coolDownMs) {
                 hasChanges = true;
-                const fg = form.querySelector("div.formGroup[data-field-name='cooldown']") as HTMLDivElement;
+                const fg = form.querySelector('div.formGroup[data-field-name='cooldown']') as HTMLDivElement;
                 if (fg) {
-                    updateValueElem(fg, cfg.coolDownMs ? cfg.coolDownMs.toString() : "0");
+                    updateValueElem(fg, cfg.coolDownMs ? cfg.coolDownMs.toString() : '0');
                 }
             }
             if (oldCfg.enabled !== cfg.enabled) {
                 hasChanges = true;
-                const fg = form.querySelector("div.formGroup[data-field-name='enabled']") as HTMLDivElement;
+                const fg = form.querySelector('div.formGroup[data-field-name='enabled']') as HTMLDivElement;
                 if (fg) {
-                    const btn = fg.querySelector("button") as HTMLButtonElement;
+                    const btn = fg.querySelector('button') as HTMLButtonElement;
                     btn.dataset.enabled = cfg.enabled.toString();
                     if (cfg.enabled) {
-                        btn.innerText = "On";
+                        btn.innerText = 'On';
                         btn.classList.add(CSSClasses.enabled);
                     } else {
-                        btn.innerText = "Off";
+                        btn.innerText = 'Off';
                         btn.classList.remove(CSSClasses.enabled);
                     }
                 }
@@ -475,18 +475,18 @@ function updateSoundCueForms(newConfig : SoundCommandList, oldConfig: SoundComma
             const newCues = cfg.mappedCues;
             if ((oldCues.length !== newCues.length) || !newCues.every((c, idx) => c === oldCues[idx])) {
                 hasChanges = true;
-                const fg = form.querySelector("div.formGroup[data-field-name='cues']") as HTMLDivElement;
+                const fg = form.querySelector('div.formGroup[data-field-name='cues']') as HTMLDivElement;
                 if (form.dataset.editing) {
                     // if we're editing, just delete all the old dropdowns
                     const cueLists = getCueOptionsList(newCues);
                     const cueElems = cueLists.map((c) => {
-                        return HtmlHelpers.buildSelect(['fieldValue'], "mappedCues", c);
+                        return HtmlHelpers.buildSelect(['fieldValue'], 'mappedCues', c);
                     });
                     removeValueElem(fg);
                     fg.append(...cueElems);
                 } else {
                     if (fg) {
-                        updateValueElem(fg, newCues.join(", "));
+                        updateValueElem(fg, newCues.join(', '));
                     }
                 }
             }
@@ -500,14 +500,14 @@ function updateSoundCueForms(newConfig : SoundCommandList, oldConfig: SoundComma
 function teardownSoundCueForms() {
     const mapPanel = document.getElementById(ElementIDs.cueConfigPanel);
     if (!mapPanel) {
-        console.error("Unable to locate panel, skipping form teardown.")
+        console.error('Unable to locate panel, skipping form teardown.')
         return;
     }
 }
 
 function onSoundCommandConfigChange(newConfig: SoundCommandList, oldConfig: SoundCommandList) {
     if (!Array.isArray(newConfig))  {
-        console.error("No config was provided, skipping form render.")
+        console.error('No config was provided, skipping form render.')
         return;
     }
 
@@ -530,4 +530,4 @@ function setupSoundCueConfigForm(){
     });
 }
 
-document.addEventListener("DOMContentLoaded", setupSoundCueConfigForm);
+document.addEventListener('DOMContentLoaded', setupSoundCueConfigForm);
