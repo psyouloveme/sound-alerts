@@ -1,3 +1,5 @@
+import { type CSSClasses } from './types'
+
 function buildDiv (id?: string, classes?: string[]): HTMLDivElement {
   const div = document.createElement('div')
   if ((classes != null) && classes.length > 0) {

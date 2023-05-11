@@ -1,6 +1,6 @@
 import nodecgHandle from './NodeCGHandle'
 import { type ListenForCb } from 'nodecg-types/types/lib/nodecg-instance'
-import { SoundAlertReplicants } from '../types/SoundAlertReplicants.d'
+import { SoundAlertReplicants } from '../types/SoundAlertReplicants'
 
 export function playedSoundCue (cueName: string, ack?: ListenForCb): void {
   if (nodecgHandle.current == null) {

@@ -1,12 +1,12 @@
 import { type NodeCG } from 'nodecg-types/types/server'
 import nodecgHandle from './NodeCGHandle'
-import { deleteSoundCommand, upsertSoundCommand } from './ConfigListeners'
 import { twitchChatReceived } from './ChatListeners'
-import { SoundAlertReplicants, type SoundCueNameList } from '../types/SoundAlertReplicants.d'
-import SoundCommandType from '../types/SoundCommandType.d'
-import SoundCommandEvents from '../types/SoundCommandEvents.d'
-import ReplicantEvents from '../types/ReplicantEvents.d'
+import { SoundAlertReplicants } from '../types/SoundAlertReplicants'
+import { type SoundCueNameList } from '../types/SoundCueNameList'
+import ReplicantEvents from '../types/ReplicantEvents'
 import { playedSoundCue } from './EventListeners'
+import { SoundCommandType } from '../types/SoundCommandType'
+import { SoundCommandEvents } from '../types/SoundCommandEvents'
 
 enum BundleDeps {
   twitchListener = 'twitch-listener'
@@ -49,7 +49,7 @@ module.exports = function (nodecg: NodeCG) {
   nodecg.Replicant<number>(SoundAlertReplicants.soundCueCommandIndex, { defaultValue: 0 })
   nodecg.Replicant<boolean>(SoundAlertReplicants.soundCuesEnabled, { defaultValue: false })
   nodecg.Replicant<AudioAlertLog>(SoundAlertReplicants.soundCueLog, { defaultValue: {} })
-  nodecg.Replicant<string[]>(SoundAlertReplicants.soundCueTypes, {
+  nodecg.Replicant<SoundCommandType[]>(SoundAlertReplicants.soundCueTypes, {
     defaultValue: [
       SoundCommandType.ordered,
       SoundCommandType.random,
@@ -78,8 +78,8 @@ module.exports = function (nodecg: NodeCG) {
   })
 
   // bind event listeners
-  nodecg.listenFor(SoundCommandEvents.upsertSoundCommand, upsertSoundCommand)
-  nodecg.listenFor(SoundCommandEvents.deleteSoundCommand, deleteSoundCommand)
+  // nodecg.listenFor(SoundCommandEvents.upsertSoundCommand, upsertSoundCommand)
+  // nodecg.listenFor(SoundCommandEvents.deleteSoundCommand, deleteSoundCommand)
   nodecg.listenFor(SoundCommandEvents.playedSoundCue, playedSoundCue)
   nodecg.listenFor(SoundCommandEvents.twitchChatReceived, BundleDeps.twitchListener, twitchChatReceived)
 }

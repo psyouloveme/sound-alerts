@@ -1,0 +1,2 @@
+const e=nodecg.Replicant("audio_alerts_enabled",{defaultValue:!1});function n(e){e.length>0&&null!=nodecg.findCue(e)&&(nodecg.playSound(e),nodecg.sendMessage("played-cue",e))}function o(e,o){!o&&e?nodecg.listenFor("PlaySoundCue",n):o&&!e&&nodecg.unlisten("PlaySoundCue",n)}NodeCG.waitForReplicants(e).then((()=>{e.on("change",o)})).catch((e=>{console.log(e)}));
+//# sourceMappingURL=index.803905c1.js.map

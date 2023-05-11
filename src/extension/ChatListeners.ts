@@ -1,21 +1,24 @@
-import { type SoundCommandEvents } from '../types/SoundCommandEvents'
+import { SoundAlertReplicants } from '../types/SoundAlertReplicants'
+import { type SoundCueNameList } from '../types/SoundCueNameList'
+import { SoundCommandEvents } from '../types/SoundCommandEvents'
+import { SoundCommandType } from '../types/SoundCommandType'
 import nodecgHandle from './NodeCGHandle'
 
 // old method
-function onChatReceived ({ user = '', message = '' }): void {
-  if (!user || !message || !message.startsWith('!')) {
-	  return
-  }
+// function onChatReceived ({ user = '', message = '' }): void {
+//   if ((user.length === 0) || (message.length === 0) || !message.startsWith('!')) {
+//     return
+//   }
 
-  const splitAlert = message.split(' ')[0]
-  if ((splitAlert.length > 0) && (nodecg.findCue(splitAlert) != null)) {
-	  nodecg.playSound(splitAlert)
-	  void nodecg.sendMessage(SoundCommandEvents.playedSoundCue, splitAlert)
-  }
-};
+//   const splitAlert = message.split(' ')[0]
+//   if ((splitAlert.length > 0) && (nodecg.findCue(splitAlert) != null)) {
+//     nodecg.playSound(splitAlert)
+//     void nodecg.sendMessage(SoundCommandEvents.playedSoundCue, splitAlert)
+//   }
+// };
 
-export function twitchChatReceived ({ user = '', message = '' }) {
-  if (!user || !message) {
+export function twitchChatReceived ({ user = '', message = '' }): void {
+  if ((user.length === 0) || (message.length === 0)) {
     return
   }
   if (nodecgHandle.current == null) {
@@ -42,17 +45,17 @@ export function twitchChatReceived ({ user = '', message = '' }) {
     nodecg.log.warn(`Cue command ${splitAlert} has invalid cues, not playing.`)
     return
   }
-  if (cmd.coolDownMs && cmd.lastUseTimestamp && (Date.now() - cmd.lastUseTimestamp) < cmd.coolDownMs) {
+  if ((cmd.coolDownMs != null) && (cmd.lastUseTimestamp != null) && (Date.now() - cmd.lastUseTimestamp) < cmd.coolDownMs) {
     nodecg.log.warn(`Cue command ${splitAlert} is still on cooldown, not playing.`)
     return
   }
-  if (!cmd.mappedCues || cmd.mappedCues.length === 0) {
+  if ((cmd.mappedCues == null) || cmd.mappedCues.length === 0) {
     nodecg.log.warn(`Cue command ${splitAlert} has no mapped cues.`)
     return
   }
 
   let cue: string | null = null
-  let orderedIndex = cmd.orderedMappingIndex || 0
+  let orderedIndex = cmd.orderedMappingIndex ?? 0
   if (cmd.mappedCues.length < orderedIndex) {
     orderedIndex = 0
   }
@@ -80,8 +83,8 @@ export function twitchChatReceived ({ user = '', message = '' }) {
     return
   }
 
-  if (!cue || !knownSoundCues.value.find((c) => c === cue)) {
-    nodecg.log.warn(`Cue command ${splitAlert} did not map to a known cue. Mapped cue was ${cue || '"null"'}.`)
+  if ((cue.length === 0) || (knownSoundCues.value.find((c) => c === cue) == null)) {
+    nodecg.log.warn(`Cue command ${splitAlert} did not map to a known cue. Mapped cue was ${cue.length > 0 ? cue : '"null"'}.`)
     return
   }
 
