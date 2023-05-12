@@ -3,11 +3,59 @@ import { SoundAlertReplicants } from '../../types/SoundAlertReplicants'
 import { type SoundCueNameList } from '../../types/SoundCueNameList'
 import { type SoundCommandType } from '../../types/SoundCommandType'
 import ReplicantEvents from '../../types/ReplicantEvents'
-import { ElementIDs, CSSClasses } from './types.d'
+import { ElementIDs, CSSClasses, FormFieldNames, type SoundCommandPartial } from './types.d'
 
 const CommandConfig = nodecg.Replicant<SoundCommandList>(SoundAlertReplicants.soundCueConfig)
 const CommandTypes = nodecg.Replicant<SoundCommandType[]>(SoundAlertReplicants.soundCueTypes)
 const SoundCues = nodecg.Replicant<SoundCueNameList>(SoundAlertReplicants.soundCueList)
+const CueIndex = nodecg.Replicant<number>(SoundAlertReplicants.soundCueCommandIndex)
+
+function toggleCommandEnabled (id: number): void {
+  if (CommandConfig?.value == null) {
+    throw Error('Unable to retrieve command config - config replicant not available.')
+  }
+  const foundCommand = CommandConfig.value.find((c) => c.id === id)
+  if (foundCommand == null) {
+    throw Error(`Unable to find command with ID ${id}.`)
+  }
+  foundCommand.enabled = !foundCommand.enabled
+}
+
+function insertCommand (data: SoundCommandPartial): SoundCommand {
+  if (CommandConfig?.value == null || CueIndex?.value == null) {
+    throw Error('Unable to insert command config - config replicant not available.')
+  }
+
+  const newData: SoundCommand = {
+    ...data,
+    id: ++CueIndex.value,
+    allCuesAreValid: true,
+    enabled: true,
+    lastUseTimestamp: null,
+    orderedMappingIndex: 0,
+    commandUsageCount: 0
+  }
+  CommandConfig.value.push(newData)
+  return { ...newData }
+}
+
+function updateCommand (id: number, data: SoundCommandPartial): SoundCommand | null {
+  if (CommandConfig?.value == null) {
+    throw Error('Unable to update command config - config replicant not available.')
+  }
+  let updatedCommand: SoundCommand | null = null
+  for (let i = 0; i < CommandConfig.value.length; i++) {
+    if (CommandConfig.value[i].id === id) {
+      updatedCommand = {
+        ...CommandConfig.value[i],
+        ...data
+      }
+      CommandConfig.value[i] = updatedCommand
+      break
+    }
+  }
+  return updatedCommand != null ? { ...updatedCommand } : null
+}
 
 function getCommandConfigById (id: number): SoundCommand {
   if (CommandConfig?.value == null) {
@@ -19,17 +67,6 @@ function getCommandConfigById (id: number): SoundCommand {
   }
   return { ...foundCommand }
 }
-
-// function getLiveCommandConfigById (id: number): SoundCommand {
-//   if (CommandConfig?.value == null) {
-//     throw Error('Unable to retrieve command config - config replicant not available.')
-//   }
-//   const foundCommand = CommandConfig.value.find((c) => c.id === id)
-//   if (foundCommand == null) {
-//     throw Error(`Unable to find command with ID ${id}.`)
-//   }
-//   return foundCommand
-// }
 
 function getTypeOptions (defaultValue?: string): SelectInputDataElem[] {
   if (CommandTypes?.value == null) {
@@ -107,19 +144,24 @@ function onEnableButtonClicked (e: MouseEvent): void {
     console.error('Failed enabling/disabling sound alert - command name found.')
     return
   }
-
-  const cmdName = target.dataset.cmdName
-  const foundCommand = CommandConfig.value.find((c) => c.commandName === cmdName)
-  if (foundCommand == null) {
-    console.error(`Failed enabling/disabling sound alert - command matching '${cmdName}' not found.`)
+  const form = target.closest('form') as HTMLFormElement
+  if (form == null) {
+    console.error('Failed sound alert edit - unable to locate form.')
     return
   }
 
-  // check the target's dataset prop.
-  const enabled = (target.dataset.enabled === 'true')
+  const cmdId = form.dataset.id
+  if (cmdId == null || cmdId.length === 0) {
+    console.error('Failed sound alert edit - unable to locate ID.')
+    return
+  }
+  const id = parseInt(cmdId)
+  if (isNaN(id)) {
+    console.error('Failed sound alert edit - invalid ID found.')
+    return
+  }
 
-  // this will trigger a re-render
-  foundCommand.enabled = !enabled
+  toggleCommandEnabled(id)
 }
 
 function removeValueElem (fg: HTMLDivElement): void {
@@ -133,20 +175,7 @@ function removeValueElem (fg: HTMLDivElement): void {
   }
 }
 
-function onEditCancelClick (event: MouseEvent): void {
-  event.preventDefault()
-
-  if (event.target == null) {
-    console.error('Failed sound alert edit - no event target found.')
-    return
-  }
-  const target = event.target as HTMLButtonElement
-  const form = target.closest('form') as HTMLFormElement
-  if (form == null) {
-    console.error('Failed sound alert edit - unable to locate form.')
-    return
-  }
-
+function convertFormToReadonly (form: HTMLFormElement, nextValues?: SoundCommand): void {
   const id = (form.dataset.id != null) ? parseInt(form.dataset.id) : -1
   if (id < 0) {
     console.error('Failed sound alert edit - no ID found.')
@@ -159,7 +188,7 @@ function onEditCancelClick (event: MouseEvent): void {
     return
   }
 
-  const foundCommand = getCommandConfigById(id)
+  const foundCommand = nextValues != null ? nextValues : getCommandConfigById(id)
   const fieldValueClass = ['fieldValue']
 
   for (let x = 0; x < formGroups.length; x++) {
@@ -201,7 +230,78 @@ function onEditCancelClick (event: MouseEvent): void {
     }
   }
 
+  form.removeEventListener('submit', onFormSubmit)
   form.dataset.editing = 'false'
+}
+
+function onEditCancelClick (event: MouseEvent): void {
+  event.preventDefault()
+
+  if (event.target == null) {
+    console.error('Failed sound alert edit - no event target found.')
+    return
+  }
+  const target = event.target as HTMLButtonElement
+  const form = target.closest('form') as HTMLFormElement
+  if (form == null) {
+    console.error('Failed sound alert edit - unable to locate form.')
+    return
+  }
+  convertFormToReadonly(form)
+}
+
+function onFormSubmit (event: SubmitEvent): void {
+  event.preventDefault()
+  if (event.target == null) {
+    console.error('Failed saving sound alert - no event target found.')
+    return
+  }
+  const form = event.target as HTMLFormElement
+  const formData = new FormData(form)
+  const id = formData.get(FormFieldNames.id) as string
+  const cmdId = parseInt(id)
+  if (isNaN(cmdId)) {
+    console.error('Failed saving sound alert - no ID found.')
+    return
+  }
+
+  const cmdName = formData.get(FormFieldNames.name) as string
+  const cmdType = formData.get(FormFieldNames.type) as string
+  const cmdCues = formData.getAll(FormFieldNames.cues) as string[]
+  const cooldown = formData.get(FormFieldNames.cooldown) as string
+  let cooldownValue: number | null = parseInt(cooldown)
+  if (isNaN(cooldownValue) || cooldownValue === 0) {
+    cooldownValue = null
+  }
+  console.log('id:', cmdId, 'name:', cmdName, 'cooldown', cooldown, 'type', cmdType, 'cues', cmdCues)
+  const oldCommand = getCommandConfigById(cmdId)
+  let updated: SoundCommand | null = null
+  if (oldCommand == null) {
+    updated = insertCommand({
+      id: -1,
+      commandName: cmdName,
+      commandType: cmdType,
+      mappedCues: cmdCues,
+      coolDownMs: cooldownValue
+    })
+    if (updated == null) {
+      throw new Error(`An error occurred creating sound command ${cmdName}, command not created.`)
+    }
+  } else {
+    updated = updateCommand(cmdId, {
+      id: cmdId,
+      commandName: cmdName,
+      commandType: cmdType,
+      mappedCues: cmdCues,
+      coolDownMs: cooldownValue
+    })
+    if (updated == null) {
+      throw new Error(`An error occurred updating sound command ${cmdName}, command not updated.`)
+    }
+  }
+  form.dataset.commandName = updated.commandName
+  form.dataset.id = updated.id.toString()
+  convertFormToReadonly(form, updated)
 }
 
 function onEditButtonClick (event: MouseEvent): void {
@@ -219,6 +319,7 @@ function onEditButtonClick (event: MouseEvent): void {
     return
   }
   form.dataset.editing = 'true'
+  form.addEventListener('submit', onFormSubmit)
 
   const id = (form.dataset.id != null) ? parseInt(form.dataset.id) : -1
   if (id < 0) {
@@ -239,21 +340,21 @@ function onEditButtonClick (event: MouseEvent): void {
     const fg = formGroups[x] as HTMLDivElement
     switch (fg.dataset.fieldName) {
       case 'name': {
-        const nameInput = HtmlHelpers.buildTextInput('commandName', foundCommand.commandName, fieldValueClass)
+        const nameInput = HtmlHelpers.buildTextInput(FormFieldNames.name, foundCommand.commandName, fieldValueClass)
         removeValueElem(fg)
         fg.appendChild(nameInput)
         break
       }
       case 'cooldown': {
         const cooldownVal = (foundCommand.coolDownMs != null) ? foundCommand.coolDownMs.toString() : '0'
-        const cooldownInput = HtmlHelpers.buildNumberInput('cooldownMs', cooldownVal, fieldValueClass)
+        const cooldownInput = HtmlHelpers.buildNumberInput(FormFieldNames.cooldown, cooldownVal, fieldValueClass)
         removeValueElem(fg)
         fg.appendChild(cooldownInput)
         break
       }
       case 'type': {
         const typeOptions = getTypeOptions(foundCommand.commandType)
-        const typeInput = HtmlHelpers.buildSelect(fieldValueClass, 'commandType', typeOptions)
+        const typeInput = HtmlHelpers.buildSelect(fieldValueClass, FormFieldNames.type, typeOptions)
         removeValueElem(fg)
         fg.appendChild(typeInput)
         break
@@ -261,7 +362,7 @@ function onEditButtonClick (event: MouseEvent): void {
       case 'cues': {
         const cueLists = getCueOptionsList(foundCommand.mappedCues)
         const cueElems = cueLists.map((c) => {
-          return HtmlHelpers.buildSelect(fieldValueClass, 'mappedCues', c)
+          return HtmlHelpers.buildSelect(fieldValueClass, FormFieldNames.cues, c)
         })
         removeValueElem(fg)
         fg.append(...cueElems)
@@ -344,7 +445,7 @@ function mapCommandToForm (cmd: SoundCommand, index: number): HTMLFormElement {
   rowDiv.dataset.index = index.toString()
   rowDiv.dataset.editing = 'false'
 
-  const newFormRow = HtmlHelpers.buildDiv(`cmd-row-${cmd.commandName}`, [CSSClasses.commandFormRow])
+  const newFormRow = HtmlHelpers.buildDiv(`cmd-row-${cmd.id}`, [CSSClasses.commandFormRow])
 
   // enable/disable button
   let fg = buildFormGroup([CSSClasses.middle])
@@ -357,6 +458,8 @@ function mapCommandToForm (cmd: SoundCommand, index: number): HTMLFormElement {
   fg.dataset.fieldName = 'id'
   const span = HtmlHelpers.buildSpan(cmd.id.toString())
   fg.appendChild(span)
+  const hid = HtmlHelpers.buildHiddenInput(FormFieldNames.id, cmd.id.toString())
+  fg.appendChild(hid)
   newFormRow.appendChild(fg)
 
   // command name field
@@ -522,7 +625,7 @@ function onSoundCommandConfigChange (newConfig: SoundCommandList, oldConfig: Sou
   if (newConfig != null && oldConfig == null) {
     // create from scratch
     initializeSoundCueForms(newConfig)
-  } else if (newConfig != null && oldConfig == null) {
+  } else if (newConfig != null && oldConfig != null) {
     // update the dom
     updateSoundCueForms(newConfig, oldConfig)
   } else if (newConfig != null && oldConfig == null) {
@@ -532,7 +635,7 @@ function onSoundCommandConfigChange (newConfig: SoundCommandList, oldConfig: Sou
 };
 
 function setupSoundCueConfigForm (): void {
-  NodeCG.waitForReplicants(CommandConfig, CommandTypes, SoundCues)
+  NodeCG.waitForReplicants(CommandConfig, CommandTypes, SoundCues, CueIndex)
     .then(() => {
       CommandConfig.on(ReplicantEvents.change, onSoundCommandConfigChange)
     })

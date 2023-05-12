@@ -14,7 +14,23 @@ export enum CSSClasses {
 
 export enum ElementIDs {
   cueConfigPanel = 'cueConfigPanel'
-};
+}
+
+export enum FormFieldNames {
+  id = 'id',
+  name = 'commandName',
+  cooldown = 'cooldownMs',
+  type = 'commandType',
+  cues = 'mappedCues'
+}
+
+export interface SoundCommandPartial {
+  id: number
+  commandName: string
+  commandType: string
+  mappedCues: string []
+  coolDownMs: number | null
+}
 
 export interface ConfigFormState {
   editingRows: number[]
