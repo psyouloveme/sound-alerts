@@ -17,27 +17,61 @@
         defaultValue: false,
       });
 
+      const randomMap = {
+        '!ticket': [
+          '!ticket1',
+          '!ticket2',
+          '!ticket3'
+        ],
+        '!hk': [
+          '!ryo',
+          '!fuku',
+          '!ine'
+        ],
+        '!hongkong': [
+          '!ryo',
+          '!fuku',
+          '!ine'
+        ],
+        '!bokus': [
+          '!fat',
+          '!guts',
+          '!yatta',
+          '!ganbare',
+          '!dead'
+        ]
+      }
+
       const onChatReceived = ({ user = "", message = "" }) => {
-        if (!user || !message) {
+        if (user == null || user.length === 0 || message == null || message.length === 0) {
           return;
         }
 
         const splitAlert = message.split(" ")[0];
-        if (splitAlert && nodecg.findCue(splitAlert)) {
-          nodecg.playSound(splitAlert);
-          nodecg.sendMessage("played-cue", splitAlert);
+        if (splitAlert == null || splitAlert.length === 0) {
+          return;
+        }
+        let cueToLookup = splitAlert
+        if (splitAlert in randomMap) {
+          cueToLookup = randomMap[splitAlert][Math.floor(Math.random() * randomMap[splitAlert].length)];
+        }
+        if (nodecg.findCue(cueToLookup)) {
+          nodecg.playSound(cueToLookup);
+          nodecg.sendMessage("played-cue", cueToLookup);
         }
       };
 
-      NodeCG.waitForReplicants(audioEnabled).then(() => {
-        audioEnabled.on("change", (nextVal, prevVal) => {
-          if (!prevVal && nextVal) {
-            nodecg.listenFor("ChatReceived", "twitch-listener", onChatReceived);
-          } else if (prevVal && !nextVal) {
-            nodecg.unlisten("ChatReceived", "twitch-listener", onChatReceived);
-          }
-        });
-      });
+      NodeCG.waitForReplicants(audioEnabled)
+        .then(() => {
+          audioEnabled.on("change", (nextVal, prevVal) => {
+            if (prevVal == null && nextVal != null) {
+              nodecg.listenFor("ChatReceived", "twitch-listener", onChatReceived);
+            } else if (prevVal != null && nextVal == null) {
+              nodecg.unlisten("ChatReceived", "twitch-listener", onChatReceived);
+            }
+          });
+        })
+        .catch((e) => console.error("An error occurred setting up the chat listener."));
     </script>
   </body>
 </html>
