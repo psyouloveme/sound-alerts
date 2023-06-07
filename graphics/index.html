@@ -1,1 +1,84 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Sound Alerts</title><style>body{background-color:#0000;display:none}</style></head><body> <script>const audioEnabled=nodecg.Replicant("audio_alerts_enabled",{defaultValue:!1}),allCommands=["!good","!key","!bye","!fuku","!ine","!wind","!winner","!nocontest","!hello","!money","!blackmail","!challenger","!bigorsmall","!father","!heyboy","!hydrate","!wrong","!geek","!best","!woman","!ryo","!gettem","!rookie","!finish","!go","!race","!mark","!mornin","!unbelievable","!hang","!toobad","!ding","!get","!chen","!lunch","!boats","!heykid","!sweaty","!gameover","!whoa","!hyg","!prettygood","!wtg","!dead","!honk","!fat","!ganbare","!guts","!yatta","!butterflies","!terry","!marry","!seeya","!busy","!gta","!yourfault","!yess","!goood","!madangels","!mework","!sure","!bro","!groovin"],hkmap=["!ryo","!fuku","!ine","!gta"],randomMap={"!ticket":["!ticket1","!ticket2","!ticket3"],"!hk":hkmap,"!hongkong":hkmap,"!bokus":["!fat","!guts","!yatta","!ganbare","!dead"],"!random":allCommands},onChatReceived=({user:e="",message:a=""})=>{if(null==e||0===e.length||null==a||0===a.length)return;const n=a.split(" ")[0];if(null==n||0===n.length)return;let t=n;n in randomMap&&(t=randomMap[n][Math.floor(Math.random()*randomMap[n].length)]),nodecg.findCue(t)&&(nodecg.playSound(t),nodecg.sendMessage("played-cue",t))};NodeCG.waitForReplicants(audioEnabled).then((()=>{audioEnabled.on("change",((e,a)=>{null==a&&null!=e?nodecg.listenFor("ChatReceived","twitch-listener",onChatReceived):null!=a&&null==e&&nodecg.unlisten("ChatReceived","twitch-listener",onChatReceived)}))})).catch((e=>console.error("An error occurred setting up the chat listener.")));</script> </body></html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Sound Alerts</title>
+    <style>body {
+  background-color: #0000;
+  display: none;
+}
+
+</style>
+  </head>
+
+  <body>
+    <script>const audioEnabled = nodecg.Replicant("audio_alerts_enabled", {
+    defaultValue: false
+});
+const cmds = {
+    "countz4MiuRainbow": [
+        "!sure",
+        "!ding",
+        "!go"
+    ]
+};
+const mod = (n, d)=>(n % d + d) % d;
+const hashStr = (str)=>{
+    var hash = 0, i, chr;
+    if (str.length === 0) return hash;
+    for(i = 0; i < str.length; i++){
+        chr = str.charCodeAt(i);
+        hash = (hash << 5) - hash + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+};
+const onChatReceived = ({ user ="" , message ="" , msgobj =null  })=>{
+    if (user == null || user.length === 0 || message == null || message.length === 0 || !message.includes("!") || msgobj == null || msgobj.length === 0) return;
+    const msgMap = {
+        emotes: [],
+        text: []
+    };
+    msgobj.reduce((prev, curr)=>{
+        switch(curr.type){
+            case "emote":
+                prev.emotes.push(curr);
+                break;
+            case "text":
+                prev.text.push(curr);
+                break;
+            default:
+                break;
+        }
+        return prev;
+    }, msgMap);
+    // no emote, just leave
+    if (msgMap.emotes.length === 0) return;
+    const validEmotes = msgMap.emotes.reduce((prev, curr)=>{
+        if (curr.name in cmds) prev.push(curr.name);
+        return prev;
+    }, []);
+    if (validEmotes.length === 0) return;
+    const firstEmote = validEmotes[0];
+    let cueToPlay = null;
+    const pickFromArray = cmds[firstEmote];
+    if (pickFromArray == null || pickFromArray.length === 0) return;
+    const hashedMsg = hashStr(message);
+    const idx = mod(hashedMsg, pickFromArray.length);
+    cueToPlay = pickFromArray[idx];
+    if (cueToPlay == null || cueToPlay.length === 0) return;
+    if (nodecg.findCue(cueToPlay)) {
+        nodecg.playSound(cueToPlay);
+        nodecg.sendMessage("played-cue", cueToPlay);
+    }
+};
+NodeCG.waitForReplicants(audioEnabled).then(()=>{
+    audioEnabled.on("change", (nextVal, prevVal)=>{
+        if (prevVal == null && nextVal != null) nodecg.listenFor("ChatReceived", "twitch-listener", onChatReceived);
+        else if (prevVal != null && nextVal == null) nodecg.unlisten("ChatReceived", "twitch-listener", onChatReceived);
+    });
+}).catch((e)=>console.error("An error occurred setting up the chat listener."));
+
+</script>
+  </body>
+</html>
